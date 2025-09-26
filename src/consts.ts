@@ -2,33 +2,33 @@ import type { Site, Page, Links, Socials } from "@types"
 
 // Global
 export const SITE: Site = {
-  TITLE: "Astro Sphere",
-  DESCRIPTION: "Welcome to Astro Sphere, a portfolio and blog for designers and developers.",
-  AUTHOR: "Mark Horn",
+  TITLE: "FoundersWall",
+  DESCRIPTION: "Product tests, AI experiments, and blunt reviews from a builder’s perspective.",
+  AUTHOR: "Sixthsense",
 }
 
 // Work Page
 export const WORK: Page = {
-  TITLE: "Work",
-  DESCRIPTION: "Places I have worked.",
+  TITLE: "Experiments",
+  DESCRIPTION: "Hands-on tests, trials, and product breakdowns.",
 }
 
 // Blog Page
 export const BLOG: Page = {
-  TITLE: "Blog",
-  DESCRIPTION: "Writing on topics I am passionate about.",
+  TITLE: "Reviews",
+  DESCRIPTION: "Unfiltered takes on tools, AI models, and products.",
 }
 
 // Projects Page 
 export const PROJECTS: Page = {
   TITLE: "Projects",
-  DESCRIPTION: "Recent projects I have worked on.",
+  DESCRIPTION: "Products and tools built by other indie builders.",
 }
 
 // Search Page
 export const SEARCH: Page = {
   TITLE: "Search",
-  DESCRIPTION: "Search all posts and projects by keyword.",
+  DESCRIPTION: "Find product tests, reviews, and experiments.",
 }
 
 // Links
@@ -38,7 +38,7 @@ export const LINKS: Links = [
     HREF: "/", 
   },
   { 
-    TEXT: "Work", 
+    TEXT: "Experiments", 
     HREF: "/work", 
   },
   { 
@@ -56,26 +56,19 @@ export const SOCIALS: Socials = [
   { 
     NAME: "Email",
     ICON: "email", 
-    TEXT: "markhorn.dev@gmail.com",
-    HREF: "mailto:markhorn.dev@gmail.com",
+    TEXT: "warden@founderswall.com",
+    HREF: "mailto:warden@founderswall.com",
   },
   { 
     NAME: "Github",
     ICON: "github",
-    TEXT: "markhorn-dev",
-    HREF: "https://github.com/markhorn-dev/astro-sphere"
-  },
-  { 
-    NAME: "LinkedIn",
-    ICON: "linkedin",
-    TEXT: "markhorn-dev",
-    HREF: "https://www.linkedin.com/in/markhorn-dev/",
+    TEXT: "sixthsense",
+    HREF: "https://github.com/sazeai/founderswall-blog"
   },
   { 
     NAME: "Twitter",
     ICON: "twitter-x",
-    TEXT: "markhorn_dev",
-    HREF: "https://twitter.com/markhorn_dev",
+    TEXT: "AINotSoSmart",
+    HREF: "https://x.com/AINotSoSmart",
   },
 ]
-
