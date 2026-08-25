@@ -1,5 +1,5 @@
 {
-  "name": "astro-sphere",
+  "name": "ai-q",
   "type": "module",
   "version": "1.0.0",
   "scripts": {
@@ -9,9 +9,7 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "preview:network": "astro dev --host",
-    "astro": "astro",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.6",
@@ -29,8 +27,5 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
-  },
-  "optionalDependencies": {
-    "@rollup/rollup-win32-x64-msvc": "^4.62.5"
   }
 }
