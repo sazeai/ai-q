@@ -75,15 +75,9 @@ export const SOCIALS: Socials = [
     HREF: "mailto:contact@ai-q.in",
   },
   {
-    NAME: "Github",
-    ICON: "github",
-    TEXT: "ai-q",
-    HREF: "https://github.com/sazeai/ai-q"
-  },
-  {
     NAME: "Twitter",
     ICON: "twitter-x",
-    TEXT: "AINotSoSmart",
-    HREF: "https://x.com/AINotSoSmart",
+    TEXT: "9to5_Dad",
+    HREF: "https://x.com/9to5_Dad",
   },
 ]
