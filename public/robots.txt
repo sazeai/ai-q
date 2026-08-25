@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://localhost:4321/sitemap-index.xml
+# Disallow dynamic search pages from indexing to preserve crawl budget
+Disallow: /search?*
+
+Sitemap: https://ai-q.in/sitemap-index.xml

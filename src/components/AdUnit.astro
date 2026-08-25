@@ -1,0 +1,64 @@
+---
+import { ADSENSE } from "@consts"
+import { cn } from "@lib/utils"
+
+interface Props {
+  slot?: string
+  format?: "auto" | "rectangle" | "horizontal" | "fluid"
+  label?: string
+  class?: string
+}
+
+const {
+  slot = "1234567890",
+  format = "auto",
+  label = "Advertisement",
+  class: className,
+} = Astro.props
+
+const minHeightClass = {
+  rectangle: "min-h-[280px]",
+  horizontal: "min-h-[100px]",
+  fluid: "min-h-[250px]",
+  auto: "min-h-[250px]",
+}[format] || "min-h-[250px]"
+
+const isProduction = import.meta.env.PROD && ADSENSE.ENABLED && ADSENSE.CLIENT_ID && !ADSENSE.CLIENT_ID.includes("XXXX")
+---
+
+<div class={cn("my-8 w-full flex flex-col items-center justify-center overflow-hidden", className)}>
+  <span class="text-[10px] uppercase font-semibold tracking-wider text-black/40 dark:text-white/40 mb-1.5">
+    {label}
+  </span>
+
+  <div class={cn(
+    "w-full rounded-xl border border-dashed border-black/15 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.02] flex items-center justify-center overflow-hidden",
+    minHeightClass
+  )}>
+    {isProduction ? (
+      <ins
+        class="adsbygoogle"
+        style="display:block; width:100%;"
+        data-ad-client={ADSENSE.CLIENT_ID}
+        data-ad-slot={slot}
+        data-ad-format={format}
+        data-full-width-responsive="true"
+      ></ins>
+    ) : (
+      <div class="flex flex-col items-center justify-center p-6 text-center text-black/50 dark:text-white/50">
+        <svg class="size-6 mb-2 stroke-current opacity-60" viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+          <rect width="20" height="14" x="2" y="5" rx="2"/>
+          <line x1="2" x2="22" y1="10" y2="10"/>
+        </svg>
+        <span class="text-xs font-mono font-medium">Google AdSense Placement</span>
+        <span class="text-[11px] opacity-75 mt-0.5 font-mono">Slot: {slot} &bull; Format: {format}</span>
+      </div>
+    )}
+  </div>
+</div>
+
+{isProduction && (
+  <script is:inline>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+)}

@@ -8,11 +8,11 @@ import { SEARCH } from "@consts";
 
 const posts = (await getCollection("blog")).filter((post) => !post.data.draft);
 
-const projects = (await getCollection("projects")).filter(
+const models = (await getCollection("ai-models")).filter(
   (post) => !post.data.draft,
 );
 
-const data = [...posts, ...projects] as CollectionEntry<"blog">[];
+const data = [...posts, ...models] as CollectionEntry<"blog">[];
 ---
 
 <PageLayout title={SEARCH.TITLE} description={SEARCH.DESCRIPTION}>

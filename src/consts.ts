@@ -1,71 +1,86 @@
-import type { Site, Page, Links, Socials } from "@types"
+import type { Site, Page, Links, Socials, SEOConfig, AdSenseConfig, AnalyticsConfig } from "@types"
 
-// Global
+// Global Site Information
 export const SITE: Site = {
-  TITLE: "FoundersWall",
-  DESCRIPTION: "Product tests, AI experiments, and blunt reviews from a builder’s perspective.",
-  AUTHOR: "Sixthsense",
+  TITLE: "AI-Q",
+  DESCRIPTION: "Best AI image prompts, Gemini & Midjourney guides, and AI model breakdowns.",
+  AUTHOR: "AI-Q Editorial Team",
+  LANGUAGE: "en-IN",
+  NUM_POSTS_ON_HOMEPAGE: 3,
+  NUM_PROJECTS_ON_HOMEPAGE: 3,
 }
 
-// Work Page
-export const WORK: Page = {
-  TITLE: "Experiments",
-  DESCRIPTION: "Hands-on tests, trials, and product breakdowns.",
+// Global SEO Configuration
+export const SEO: SEOConfig = {
+  OG_IMAGE: "/open-graph.jpg",
+  TWITTER_HANDLE: "@9to5_Dad",
+  LOCALE: "en_IN",
+  GOOGLE_SITE_VERIFICATION: "GOOGLE_SEARCH_CONSOLE_VERIFICATION_TOKEN",
 }
 
-// Blog Page
+// Google AdSense Configuration
+export const ADSENSE: AdSenseConfig = {
+  CLIENT_ID: "ca-pub-XXXXXXXXXXXXXXXX",
+  ENABLED: true,
+}
+
+// Analytics Configuration
+export const ANALYTICS: AnalyticsConfig = {
+  GOOGLE_ANALYTICS_ID: "G-XXXXXXXXXX",
+}
+
+// Blog / Prompts Page
 export const BLOG: Page = {
-  TITLE: "Reviews",
-  DESCRIPTION: "Unfiltered takes on tools, AI models, and products.",
+  TITLE: "Prompt Guides & Blogs",
+  DESCRIPTION: "Trending AI image prompts, copy-paste prompts, and in-depth generation tutorials.",
 }
 
-// Projects Page 
-export const PROJECTS: Page = {
-  TITLE: "Projects",
-  DESCRIPTION: "Products and tools built by other indie builders.",
+// AI Models & Experiments Page
+export const AI_MODELS: Page = {
+  TITLE: "AI Models & Experiments",
+  DESCRIPTION: "Benchmarks, image comparisons, and technical reviews of new AI image models.",
 }
+
+// Backward compatibility alias
+export const PROJECTS = AI_MODELS
 
 // Search Page
 export const SEARCH: Page = {
-  TITLE: "Search",
-  DESCRIPTION: "Find product tests, reviews, and experiments.",
+  TITLE: "Search Prompts & Models",
+  DESCRIPTION: "Search across hundreds of curated prompts, models, and AI guides.",
 }
 
-// Links
+// Navigation Links
 export const LINKS: Links = [
-  { 
-    TEXT: "Home", 
-    HREF: "/", 
+  {
+    TEXT: "Home",
+    HREF: "/",
   },
-  { 
-    TEXT: "Experiments", 
-    HREF: "/work", 
+  {
+    TEXT: "Blog",
+    HREF: "/blog",
   },
-  { 
-    TEXT: "Blog", 
-    HREF: "/blog", 
-  },
-  { 
-    TEXT: "Projects", 
-    HREF: "/projects", 
+  {
+    TEXT: "AI Models",
+    HREF: "/ai-models",
   },
 ]
 
-// Socials
+// Social Links
 export const SOCIALS: Socials = [
-  { 
+  {
     NAME: "Email",
-    ICON: "email", 
-    TEXT: "warden@founderswall.com",
-    HREF: "mailto:warden@founderswall.com",
+    ICON: "email",
+    TEXT: "contact@ai-q.in",
+    HREF: "mailto:contact@ai-q.in",
   },
-  { 
+  {
     NAME: "Github",
     ICON: "github",
-    TEXT: "sixthsense",
-    HREF: "https://github.com/sazeai/founderswall-blog"
+    TEXT: "ai-q",
+    HREF: "https://github.com/sazeai/ai-q"
   },
-  { 
+  {
     NAME: "Twitter",
     ICON: "twitter-x",
     TEXT: "AINotSoSmart",

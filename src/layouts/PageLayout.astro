@@ -1,17 +1,62 @@
 ---
 import "@styles/global.css"
 import BaseHead from "@components/BaseHead.astro"
+import SchemaOrg from "@components/SchemaOrg.astro"
 import Header from "@components/Header.astro"
 import Footer from "@components/Footer.astro"
 import Drawer from "@components/Drawer.astro"
-const { title, description } = Astro.props
 import { SITE } from "@consts"
+
+interface ArticleData {
+  title: string
+  description: string
+  datePublished: Date
+  dateModified?: Date
+  author?: string
+  image?: string
+  tags?: string[]
+  faq?: { question: string, answer: string }[]
+}
+
+interface Props {
+  title: string
+  description: string
+  image?: string
+  canonicalUrl?: string
+  type?: "website" | "article"
+  article?: ArticleData
+}
+
+const {
+  title,
+  description,
+  image,
+  canonicalUrl,
+  type = "website",
+  article,
+} = Astro.props
+
+const pageTitle = title === "Home" ? `${SITE.TITLE} | ${SITE.DESCRIPTION}` : `${title} | ${SITE.TITLE}`
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={`${title} | ${SITE.TITLE}`} description={description} />
+    <BaseHead
+      title={pageTitle}
+      description={description}
+      image={image}
+      canonicalUrl={canonicalUrl}
+      type={type}
+      article={article}
+    />
+    <SchemaOrg
+      title={title}
+      description={description}
+      url={Astro.url}
+      type={type}
+      article={article}
+    />
   </head>
   <body>
     <Header />

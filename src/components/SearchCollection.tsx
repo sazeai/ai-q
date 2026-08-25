@@ -8,7 +8,7 @@ import SearchBar from "@components/SearchBar"
 type Props = {
   entry_name: string
   tags: string[]
-  data: CollectionEntry<"blog">[] | CollectionEntry<'projects'>[]
+  data: CollectionEntry<"blog">[] | CollectionEntry<'ai-models'>[]
 }
 
 export default function SearchCollection({ entry_name, data, tags }: Props) {
@@ -37,7 +37,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
         )
       )
     );
-    setCollection(descending() ? filtered.toReversed() : filtered)
+    setCollection(descending() ? [...filtered].reverse() : filtered)
   })
 
   function toggleDescending() {
@@ -66,6 +66,23 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
     const wrapper = document.getElementById("search-collection-wrapper");
     if (wrapper) {
       wrapper.style.minHeight = "unset";
+    }
+
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tagParam = urlParams.get("tag");
+      const qParam = urlParams.get("q");
+
+      if (tagParam) {
+        const matchedTag = tags.find(
+          (t) => t.toLowerCase() === tagParam.toLowerCase()
+        ) || tagParam;
+        setFilter(new Set([matchedTag]));
+      }
+
+      if (qParam) {
+        setQuery(qParam);
+      }
     }
   })
 

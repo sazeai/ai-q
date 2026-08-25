@@ -1,0 +1,189 @@
+---
+import { SITE, SEO, SOCIALS } from "@consts"
+
+interface BreadcrumbItem {
+  name: string
+  item: string
+}
+
+interface FAQItem {
+  question: string
+  answer: string
+}
+
+interface ArticleData {
+  title: string
+  description: string
+  datePublished: Date
+  dateModified?: Date
+  author?: string
+  image?: string
+  tags?: string[]
+  faq?: FAQItem[]
+}
+
+interface Props {
+  title?: string
+  description?: string
+  url: URL | string
+  type?: "website" | "article"
+  article?: ArticleData
+  breadcrumbs?: BreadcrumbItem[]
+}
+
+const { url, type = "website", article, breadcrumbs } = Astro.props
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, "") || "https://ai-q.in"
+const currentUrl = typeof url === "string" ? url : url.toString()
+const defaultImage = `${siteUrl}${SEO.OG_IMAGE}`
+
+// Extract social profile URLs for sameAs
+const socialUrls = SOCIALS
+  .map(s => s.HREF)
+  .filter(href => href.startsWith("http"))
+
+// 1. Standalone Organization Entity Schema (E-E-A-T Brand Authority)
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${siteUrl}/#organization`,
+  "name": SITE.TITLE,
+  "url": siteUrl,
+  "description": SITE.DESCRIPTION,
+  "logo": {
+    "@type": "ImageObject",
+    "url": `${siteUrl}/favicon.svg`,
+    "caption": `${SITE.TITLE} Logo`
+  },
+  "sameAs": socialUrls,
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "contact@ai-q.in",
+    "contactType": "editorial"
+  }
+}
+
+// 2. WebSite Schema with SearchAction
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteUrl}/#website`,
+  "name": SITE.TITLE,
+  "description": SITE.DESCRIPTION,
+  "url": siteUrl,
+  "inLanguage": SITE.LANGUAGE,
+  "publisher": {
+    "@id": `${siteUrl}/#organization`
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": `${siteUrl}/search?q={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+
+// 3. BreadcrumbList Schema
+const defaultBreadcrumbs: BreadcrumbItem[] = [
+  { name: "Home", item: siteUrl },
+]
+
+if (breadcrumbs && breadcrumbs.length > 0) {
+  defaultBreadcrumbs.push(...breadcrumbs)
+} else {
+  const pathname = new URL(currentUrl).pathname
+  const segments = pathname.split("/").filter(Boolean)
+  let accumulatedPath = siteUrl
+  segments.forEach((segment) => {
+    accumulatedPath += `/${segment}`
+    const formattedName = segment
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase())
+    defaultBreadcrumbs.push({
+      name: formattedName,
+      item: accumulatedPath,
+    })
+  })
+}
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": defaultBreadcrumbs.map((crumb, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": crumb.name,
+    "item": crumb.item,
+  }))
+}
+
+// 4. Article / BlogPosting Schema with Author Profile Links
+let articleSchema = null
+if (type === "article" && article) {
+  const articleImage = article.image
+    ? (article.image.startsWith("http") ? article.image : `${siteUrl}${article.image.startsWith("/") ? "" : "/"}${article.image}`)
+    : defaultImage
+
+  const authorName = article.author || SITE.AUTHOR
+  const authorProfile = `https://x.com/${SEO.TWITTER_HANDLE.replace("@", "")}`
+
+  articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${currentUrl}/#article`,
+    "isPartOf": {
+      "@id": `${siteUrl}/#website`
+    },
+    "headline": article.title,
+    "description": article.description,
+    "image": articleImage,
+    "datePublished": article.datePublished.toISOString(),
+    "dateModified": (article.dateModified || article.datePublished).toISOString(),
+    "inLanguage": SITE.LANGUAGE,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": currentUrl
+    },
+    "author": {
+      "@type": "Person",
+      "name": authorName,
+      "url": siteUrl,
+      "sameAs": [authorProfile]
+    },
+    "publisher": {
+      "@id": `${siteUrl}/#organization`
+    },
+    "keywords": article.tags ? article.tags.join(", ") : undefined
+  }
+}
+
+// 5. FAQPage Schema
+let faqSchema = null
+if (article && article.faq && article.faq.length > 0) {
+  faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `${currentUrl}/#faq`,
+    "mainEntity": article.faq.map((item) => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  }
+}
+---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+{articleSchema && (
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(articleSchema)} />
+)}
+{faqSchema && (
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+)}

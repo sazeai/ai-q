@@ -1,0 +1,54 @@
+---
+import { cn } from "@lib/utils"
+
+interface FAQItem {
+  question: string
+  answer: string
+}
+
+interface Props {
+  items: FAQItem[]
+  title?: string
+  class?: string
+}
+
+const {
+  items = [],
+  title = "Frequently Asked Questions",
+  class: className,
+} = Astro.props
+---
+
+{items && items.length > 0 && (
+  <div class={cn("my-10 space-y-4 rounded-xl border border-black/15 dark:border-white/20 p-5 md:p-6 bg-black/[0.02] dark:bg-white/[0.02]", className)}>
+    {title && (
+      <h2 class="text-xl font-bold text-black dark:text-white mb-4 flex items-center gap-2">
+        <svg class="size-5 stroke-current text-emerald-500" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="3" />
+        </svg>
+        {title}
+      </h2>
+    )}
+
+    <div class="space-y-3">
+      {items.map((item, index) => (
+        <details
+          class="group rounded-lg border border-black/10 dark:border-white/15 bg-white dark:bg-neutral-900/60 p-4 transition-all duration-200 hover:border-black/25 dark:hover:border-white/30"
+          open={index === 0}
+        >
+          <summary class="flex cursor-pointer items-center justify-between font-semibold text-black dark:text-white">
+            <span class="text-sm md:text-base pr-4">{item.question}</span>
+            <svg class="size-4 shrink-0 transition-transform duration-300 group-open:rotate-180 stroke-current text-black/60 dark:text-white/60" viewBox="0 0 24 24" fill="none" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </summary>
+          <div class="mt-3 text-sm leading-relaxed text-black/75 dark:text-white/75 border-t border-black/5 dark:border-white/10 pt-3">
+            <p>{item.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+)}

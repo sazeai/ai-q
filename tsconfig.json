@@ -4,9 +4,14 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@*": [
-        "src/*"
-      ]
+      "@components/*": ["src/components/*"],
+      "@components": ["src/components"],
+      "@layouts/*": ["src/layouts/*"],
+      "@lib/*": ["src/lib/*"],
+      "@styles/*": ["src/styles/*"],
+      "@types": ["src/types.ts"],
+      "@consts": ["src/consts.ts"],
+      "@*": ["src/*"]
     },
     "jsx": "preserve",
     "jsxImportSource": "solid-js"
@@ -14,7 +19,10 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.astro"
+    "src/**/*.astro",
+    "src/**/*.md",
+    "src/**/*.mdx",
+    ".astro/types.d.ts"
   ],
   "exclude": [
     "dist",

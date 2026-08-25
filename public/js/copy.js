@@ -1,45 +1,56 @@
-const codeBlocks = document.querySelectorAll('pre:has(code)');
+function initializeCopyButtons() {
+  const codeBlocks = document.querySelectorAll('pre:has(code), pre');
 
-//add copy btn to every code block on the dom
-codeBlocks.forEach((code) => {
-  //button icon
-  const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-  use.setAttribute('href', '/copy.svg#empty');
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.classList.add('copy-svg');
-  svg.appendChild(use);
+  codeBlocks.forEach((pre) => {
+    // Remove any old/stale buttons or containers
+    pre.querySelectorAll('.copy-cnt, .copy-btn').forEach((el) => el.remove());
 
-  //create button
-  const btn = document.createElement('button');
-  btn.appendChild(svg);
-  btn.classList.add('copy-btn');
-  btn.addEventListener('click', (e) => copyCode(e));
+    pre.classList.add('relative');
 
-  //container to fix copy button
-  const container = document.createElement('div');
-  container.classList.add('copy-cnt');
-  container.appendChild(btn);
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('aria-label', 'Copy code to clipboard');
 
-  //add to code block
-  code.classList.add('relative');
-  code.appendChild(container);
-});
+    const copyIcon = `
+      <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    `;
 
-/**
-* @param {MouseEvent} event
-*/
-function copyCode(event) {
-  let codeBlock = getChildByTagName(event.currentTarget.parentElement.parentElement, 'CODE')
-  navigator.clipboard.writeText(codeBlock.innerText)
-  const use = getChildByTagName(getChildByTagName(event.currentTarget, 'svg'), 'use');
-  use.setAttribute('href', '/copy.svg#filled')
-  setTimeout(() => {
-    if (use) {
-      use.setAttribute('href', '/copy.svg#empty')
-    }
-  }, 100);
+    const checkIcon = `
+      <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    `;
+
+    btn.innerHTML = `${copyIcon}<span class="copy-text">Copy</span>`;
+
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const code = pre.querySelector('code');
+      const textToCopy = (code ? code.innerText : pre.innerText).trimEnd();
+
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        btn.classList.add('copied');
+        btn.innerHTML = `${checkIcon}<span class="copy-text">Copied</span>`;
+
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `${copyIcon}<span class="copy-text">Copy</span>`;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy code: ', err);
+      }
+    });
+
+    pre.appendChild(btn);
+  });
 }
 
-function getChildByTagName(element, tagName) {
-  return Array.from(element.children).find((child) => child.tagName === tagName);
-}
+document.addEventListener('DOMContentLoaded', initializeCopyButtons);
+document.addEventListener('astro:after-swap', initializeCopyButtons);
+document.addEventListener('astro:page-load', initializeCopyButtons);
+initializeCopyButtons();

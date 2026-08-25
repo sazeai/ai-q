@@ -1,8 +1,11 @@
 ---
 interface Props {
   type?: "default" | "info" | "warning" | "error";
+  class?: string;
 }
-const { type = "default" } = Astro.props;
+
+const { type = "default", class: className } = Astro.props;
+
 let emoji = "💡";
 if (type === "info") {
   emoji = "ℹ️";
@@ -12,19 +15,24 @@ if (type === "info") {
   emoji = "🚨";
 }
 
-const baseClasses = "relative my-4 flex rounded border p-3";
+const baseClasses =
+  "relative my-4 flex items-start gap-3 rounded-lg border p-4 text-sm";
 const typeClasses = {
   default:
-    "border-orange-800 bg-orange-100 text-orange-950 dark:border-orange-200/20 dark:bg-orange-950/20 dark:text-orange-200",
-  info: "border-blue-800 bg-blue-100 text-blue-950 dark:border-blue-200/20 dark:bg-blue-950/20 dark:text-blue-200",
+    "border-amber-600 bg-amber-100/60 text-amber-950 dark:border-amber-500/40 dark:bg-amber-950/20 dark:text-amber-200",
+  info: "border-blue-600 bg-blue-100/60 text-blue-950 dark:border-blue-500/40 dark:bg-blue-950/20 dark:text-blue-200",
   warning:
-    "border-yellow-800 bg-yellow-100 text-yellow-950 dark:border-yellow-200/20 dark:bg-yellow-950/20 dark:text-yellow-200",
+    "border-yellow-600 bg-yellow-100/60 text-yellow-950 dark:border-yellow-500/40 dark:bg-yellow-950/20 dark:text-yellow-200",
   error:
-    "border-red-800 bg-red-100 text-red-950 dark:border-red-200/20 dark:bg-red-950/20 dark:text-red-200",
+    "border-red-600 bg-red-100/60 text-red-950 dark:border-red-500/40 dark:bg-red-950/20 dark:text-red-200",
 };
 ---
 
-<div class:list={["not-prose", baseClasses, typeClasses[type]]}>
-  <span class="pointer-events-none pr-3 text-xl select-none">{emoji}</span>
-  <slot />
+<div class:list={["not-prose", baseClasses, typeClasses[type], className]}>
+  <span class="pointer-events-none select-none text-xl leading-none"
+    >{emoji}</span
+  >
+  <div class="flex-1 leading-relaxed">
+    <slot />
+  </div>
 </div>

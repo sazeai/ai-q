@@ -3,15 +3,14 @@ import type { CollectionEntry } from "astro:content"
 import { formatDate, readingTime } from "@lib/utils"
 
 type Props = {
-  entry: CollectionEntry<"projects"> | CollectionEntry<"blog">
+  entry: CollectionEntry<"ai-models"> | CollectionEntry<"blog">
 }
 
 const { entry } = Astro.props
 const { collection, data, body } = entry
-const { title, summary, date } = data
-
-const demoUrl = collection === "projects" ? data.demoUrl : null
-const repoUrl = collection === "projects" ? data.repoUrl : null
+const { title, summary, date, updatedDate, image, author = "AI-Q Team" } = data
+const tags = "tags" in data ? (data.tags as string[]) : []
+const collectionName = collection === "ai-models" ? "AI Models" : collection
 ---
 
 <div>
@@ -20,52 +19,76 @@ const repoUrl = collection === "projects" ? data.repoUrl : null
       <line x1="19" y1="12" x2="5" y2="12" class="scale-x-0 group-hover:scale-x-100 translate-x-3 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
       <polyline points="12 19 5 12 12 5" class="translate-x-1 group-hover:translate-x-0 transition-all duration-300 ease-in-out" />
     </svg>
-    <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out">
-      Back to {collection}
+    <div class="w-full group-hover:text-black group-hover:dark:text-white transition-colors duration-300 ease-in-out capitalize">
+      Back to {collectionName}
     </div>
   </a>
-  <div class="flex flex-wrap text-sm uppercase mt-12 gap-3 opacity-75">
-    <div class="flex items-center gap-2">
-      <svg class="size-5 stroke-current">
+
+  <!-- Metadata Bar -->
+  <div class="flex flex-wrap text-sm uppercase mt-6 gap-3 opacity-75">
+    <div class="flex items-center gap-1.5">
+      <svg class="size-4 stroke-current">
         <use href="/ui.svg#calendar"/>
       </svg>
-      {formatDate(date)}
+      <span>{formatDate(date)}</span>
     </div>
-    <div class="flex items-center gap-2">
-      <svg class="size-5 stroke-current">
+
+    {updatedDate && (
+      <div class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
+        <svg class="size-4 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+        </svg>
+        <span>Updated {formatDate(updatedDate)}</span>
+      </div>
+    )}
+
+    <div class="flex items-center gap-1.5">
+      <svg class="size-4 stroke-current">
         <use href="/ui.svg#book-open"/>
       </svg>
-      {readingTime(body)}
+      <span>{readingTime(body)}</span>
+    </div>
+
+    <div class="flex items-center gap-1.5">
+      <svg class="size-4 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>{author}</span>
     </div>
   </div>
-  <h1 class="text-3xl font-semibold text-black dark:text-white mt-2">
+
+  <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-black dark:text-white mt-3">
     {title}
   </h1>
-  <div class="mt-1">
+
+  <div class="mt-2 text-base text-black/80 dark:text-white/80 leading-relaxed">
     {summary}
   </div>
-  {(demoUrl || repoUrl) && 
-  <div class="mt-4 flex flex-wrap gap-2">
-    {demoUrl && 
-      <a href={demoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
-        <svg class="size-4">
-          <use href="/ui.svg#globe" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
-        </svg>
-        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
-          See Demo
-        </span>
-      </a>
-    }
-    {repoUrl && 
-      <a href={repoUrl} target="_blank" class="group flex gap-2 items-center px-3 py-1.5 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend">
-        <svg class="size-4">
-          <use href="/ui.svg#link" class="fill-current group-hover:fill-black group-hover:dark:fill-white blend"/>
-        </svg>
-        <span class="text-current group-hover:text-black group-hover:dark:text-white blend">
-          See Repository
-        </span>
-      </a>
-    }
-  </div> 
-  }
+
+  <!-- Featured Image Banner (if available) -->
+  {image && (
+    <div class="mt-6 overflow-hidden rounded-xl border border-black/15 dark:border-white/20 shadow-md">
+      <img
+        src={image}
+        alt={title}
+        class="aspect-[16/9] w-full object-cover"
+        loading="eager"
+      />
+    </div>
+  )}
+
+  <!-- Tag Pills -->
+  {tags && tags.length > 0 && (
+    <div class="flex flex-wrap gap-2 mt-4">
+      {tags.map((tag: string) => (
+        <a
+          href={`/${collection}?tag=${encodeURIComponent(tag)}`}
+          class="px-2.5 py-0.5 text-xs rounded-full border border-black/15 dark:border-white/20 bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 hover:border-black/30 dark:hover:border-white/30 text-black dark:text-white transition-all duration-200"
+        >
+          #{tag}
+        </a>
+      ))}
+    </div>
+  )}
 </div>

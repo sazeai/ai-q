@@ -29,7 +29,6 @@ html {
   color-scheme: light;
   background-color: white;
   font-family: "Atkinson", sans-serif;
-
 }
 
 html.dark {
@@ -130,7 +129,6 @@ article img {
 
 #meteors .shower {
   @apply absolute inset-0 top-0;
-  ;
   @apply left-1/2 -translate-x-1/2;
   @apply w-screen aspect-square;
 }
@@ -158,29 +156,132 @@ article img {
   @apply rotate-315;
 }
 
+/* Code Blocks & Copy Button */
+pre:has(code),
+pre {
+  @apply relative rounded-xl border border-black/10 dark:border-white/15 my-6 overflow-x-auto shadow-sm !important;
+}
+
 .copy-cnt {
-  @apply absolute w-full;
-  top: var(--copy-btn-margin);
+  display: none !important;
 }
 
 .copy-btn {
-  @apply w-[30px] fixed;
-  left: calc(100% - var(--copy-btn-margin));
-  transform: translateX(-100%);
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  width: auto !important;
+  height: 26px !important;
+  padding: 0 8px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 6px !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  cursor: pointer !important;
+  opacity: 0.85 !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  z-index: 10 !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
 }
 
+pre:hover .copy-btn {
+  opacity: 1 !important;
+}
+
+.copy-btn:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  transform: translateY(-0.5px) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+.copy-btn:active {
+  transform: translateY(0) !important;
+}
+
+.copy-btn.copied {
+  color: #4ade80 !important;
+  background: rgba(74, 222, 128, 0.14) !important;
+  border-color: rgba(74, 222, 128, 0.35) !important;
+  opacity: 1 !important;
+}
+
+.copy-btn svg,
+.copy-btn .copy-icon,
+.copy-btn .check-icon,
 .copy-svg {
-  @apply w-full aspect-square text-white opacity-70 hover:opacity-90;
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px !important;
+  min-height: 14px !important;
+  max-width: 14px !important;
+  max-height: 14px !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* Card transition */
-/* .fade-move-enter-active,
-.fade-move-exit-active {
-  transition: all 300ms ease;
+.copy-btn .copy-text {
+  font-size: 11px !important;
+  font-weight: 500 !important;
 }
 
-.fade-move-enter-from,
-.fade-move-exit-to {
-  opacity: 0;
-  transform: translateY(10px);
-} */
+/* Premium Prose Markdown Tables with Full Cell Padding */
+article table {
+  @apply w-full text-left border-collapse my-6 rounded-xl overflow-hidden border border-black/15 dark:border-white/20 shadow-sm !important;
+  display: table !important;
+  border-spacing: 0 !important;
+}
+
+article thead {
+  @apply bg-black/5 dark:bg-white/10 border-b border-black/10 dark:border-white/15 !important;
+}
+
+article th,
+article thead th,
+article thead th:first-child,
+article thead th:last-child {
+  @apply text-xs font-bold uppercase tracking-wider text-black dark:text-white !important;
+  padding: 0.875rem 1rem !important;
+}
+
+article td,
+article tbody td,
+article tbody td:first-child,
+article tbody td:last-child {
+  @apply text-sm text-black/85 dark:text-white/85 border-b border-black/10 dark:border-white/10 !important;
+  padding: 0.875rem 1rem !important;
+}
+
+article tbody tr:last-child td {
+  @apply border-b-0 !important;
+}
+
+article tbody tr {
+  @apply transition-colors duration-150 !important;
+}
+
+article tbody tr:hover {
+  @apply bg-black/[0.02] dark:bg-white/[0.03] !important;
+}
+
+/* Inline code and HR */
+article :not(pre) > code {
+  @apply px-1.5 py-0.5 text-[0.875em] rounded bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/15 text-black dark:text-white font-mono;
+}
+
+article hr {
+  @apply border-t border-black/10 dark:border-white/15 my-8;
+}

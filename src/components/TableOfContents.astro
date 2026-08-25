@@ -1,43 +1,75 @@
 ---
 import TableOfContentsHeading from "./TableOfContentsHeading.astro";
 
-// https://kld.dev/building-table-of-contents/
-const { headings } = Astro.props;
-const toc = buildToc(headings);
-
 export interface Heading {
   depth: number;
   slug: string;
   text: string;
+  subheadings: Heading[];
 }
 
-function buildToc(headings: Heading[]) {
+const { headings } = Astro.props;
+const toc = buildToc(headings || []);
+
+function buildToc(rawHeadings: { depth: number; slug: string; text: string }[] = []) {
   const toc: Heading[] = [];
-  const parentHeadings = new Map();
-  headings.forEach((h) => {
-    const heading = { ...h, subheadings: [] };
+  const parentHeadings = new Map<number, Heading>();
+
+  if (!rawHeadings || rawHeadings.length === 0) return toc;
+
+  // Filter out h1 (usually page/post title) and headings deeper than h4
+  const relevantHeadings = rawHeadings.filter((h) => h.depth >= 2 && h.depth <= 4);
+
+  relevantHeadings.forEach((h) => {
+    const heading: Heading = { ...h, subheadings: [] };
     parentHeadings.set(heading.depth, heading);
+
     if (heading.depth === 2) {
       toc.push(heading);
     } else {
-      parentHeadings.get(heading.depth - 1).subheadings.push(heading);
+      const parent = parentHeadings.get(heading.depth - 1);
+      if (parent) {
+        parent.subheadings.push(heading);
+      } else {
+        toc.push(heading);
+      }
     }
   });
+
   return toc;
 }
 ---
 
-<details
-  open
-  class="animate group rounded-lg border border-black/15 dark:border-white/20"
->
-  <summary
-    class="cursor-pointer rounded-t-lg px-3 py-1.5 font-medium transition-colors group-open:bg-black/5 hover:bg-black/5 dark:group-open:bg-white/5 hover:dark:bg-white/5"
-    >Table of Contents</summary
-  >
-  <nav>
-    <ul class="py-3">
-      {toc.map((heading) => <TableOfContentsHeading heading={heading} />)}
-    </ul>
-  </nav>
-</details>
+{
+  toc && toc.length > 0 && (
+    <details
+      open
+      class="animate group rounded-lg border border-black/15 dark:border-white/20 mb-8 overflow-hidden bg-black/[0.02] dark:bg-white/[0.02]"
+    >
+      <summary class="cursor-pointer select-none rounded-t-lg px-4 py-2.5 font-medium transition-colors group-open:bg-black/5 hover:bg-black/5 dark:group-open:bg-white/5 hover:dark:bg-white/5 text-black dark:text-white flex items-center justify-between">
+        <span>Table of Contents</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="transform transition-transform duration-200 group-open:rotate-180 opacity-60"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </summary>
+      <nav class="px-4 py-3 border-t border-black/10 dark:border-white/10">
+        <ul class="space-y-1">
+          {toc.map((heading) => (
+            <TableOfContentsHeading heading={heading} />
+          ))}
+        </ul>
+      </nav>
+    </details>
+  )
+}

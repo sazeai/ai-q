@@ -1,0 +1,115 @@
+---
+import { cn } from "@lib/utils"
+
+interface ScoreCategory {
+  label: string
+  score: number
+  maxScore?: number
+  shortLabel?: string
+}
+
+interface Props {
+  title?: string
+  overall: number | string
+  verdict?: string
+  scores: ScoreCategory[]
+  class?: string
+}
+
+const {
+  title = "AI-Q Benchmark Scorecard",
+  overall,
+  verdict = "Editor's Choice • Best-in-Class Multi-Reference & Inpainting",
+  scores = [],
+  class: className,
+} = Astro.props
+
+// Helper to calculate fill for a 10-segment precision meter
+function getSegmentFill(score: number, segmentIndex: number): number {
+  // segmentIndex is 1 to 10
+  if (score >= segmentIndex) return 100
+  if (score > segmentIndex - 1) return Math.round((score - (segmentIndex - 1)) * 100)
+  return 0
+}
+---
+
+<div class={cn("my-8 overflow-hidden rounded-xl border border-black/15 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.03] p-5 md:p-6 backdrop-blur-sm", className)}>
+  <!-- Header Bar -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/10 dark:border-white/10 pb-4 mb-6">
+    <div class="space-y-1">
+      <div class="flex items-center gap-2">
+        <span class="size-2 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]"></span>
+        <h3 class="text-base font-bold text-black dark:text-white leading-none">{title}</h3>
+      </div>
+      {verdict && (
+        <p class="text-xs text-black/60 dark:text-white/60">
+          {verdict}
+        </p>
+      )}
+    </div>
+
+    <!-- Overall Score Badge -->
+    {overall !== undefined && (
+      <div class="flex items-center gap-2.5 self-start sm:self-auto rounded-lg border border-black/15 dark:border-white/20 bg-white dark:bg-neutral-900 px-3 py-1.5 shadow-sm">
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-black/50 dark:text-white/50">Overall Rating</span>
+        <span class="text-lg font-black font-mono text-emerald-600 dark:text-emerald-400 leading-none">{overall}</span>
+        <span class="text-[11px] text-black/40 dark:text-white/40 font-mono">/ 10</span>
+      </div>
+    )}
+  </div>
+
+  <!-- Precision Calibrated Segmented Rating Meters -->
+  <div class="space-y-5">
+    {scores.map((item) => {
+      const max = item.maxScore || 10
+      const normalizedScore = (item.score / max) * 10
+      const percentage = Math.round((item.score / max) * 100)
+
+      return (
+        <div class="group space-y-2">
+          <!-- Metric Label & Value Bar -->
+          <div class="flex justify-between items-baseline text-xs font-medium">
+            <div class="flex items-center gap-2">
+              <span class="text-black/90 dark:text-white/90 font-medium text-xs md:text-sm">
+                {item.label}
+              </span>
+            </div>
+            <div class="flex items-center gap-2 font-mono">
+              <span class="text-[11px] text-black/40 dark:text-white/40">{percentage}%</span>
+              <span class="font-bold text-black dark:text-white text-xs md:text-sm">{item.score}</span>
+              <span class="text-[11px] text-black/40 dark:text-white/40">/ {max}</span>
+            </div>
+          </div>
+
+          <!-- 10-Segment Precision Gauge Bar -->
+          <div class="flex gap-1 md:gap-1.5 w-full">
+            {Array.from({ length: 10 }, (_, i) => i + 1).map((segmentIndex) => {
+              const fill = getSegmentFill(normalizedScore, segmentIndex)
+              return (
+                <div class="h-2.5 flex-1 rounded-sm bg-black/5 dark:bg-white/10 overflow-hidden relative">
+                  {fill > 0 && (
+                    <div
+                      class={cn(
+                        "h-full rounded-sm transition-all duration-500 ease-out",
+                        "bg-gradient-to-r from-emerald-500 to-teal-400 dark:from-emerald-400 dark:to-cyan-400",
+                        fill === 100 ? "shadow-[0_0_8px_rgba(16,185,129,0.2)]" : "opacity-90"
+                      )}
+                      style={`width: ${fill}%;`}
+                    />
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )
+    })}
+  </div>
+
+  <!-- Calibration Footer Guide -->
+  <div class="mt-6 pt-4 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-[11px] font-mono text-black/40 dark:text-white/40">
+    <span>0.0 (Unusable)</span>
+    <span>5.0 (Average)</span>
+    <span>10.0 (State of the Art)</span>
+  </div>
+</div>

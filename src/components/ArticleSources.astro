@@ -1,0 +1,105 @@
+---
+import { cn } from "@lib/utils"
+
+export interface SourceItem {
+  title: string
+  url: string
+  type?: "source" | "via" | "docs" | "paper" | "reference"
+}
+
+interface Props {
+  title?: string
+  sources: SourceItem[]
+  class?: string
+}
+
+const {
+  title = "Sources & Verification",
+  sources = [],
+  class: className,
+} = Astro.props
+
+const badgeStyles: Record<string, { label: string; class: string }> = {
+  source: {
+    label: "Source",
+    class: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+  },
+  via: {
+    label: "Via",
+    class: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20",
+  },
+  docs: {
+    label: "Official Docs",
+    class: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20",
+  },
+  paper: {
+    label: "Research Paper",
+    class: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
+  },
+  reference: {
+    label: "Reference",
+    class: "bg-black/5 dark:bg-white/10 text-black/70 dark:text-white/70 border-black/10 dark:border-white/15",
+  },
+}
+
+function getDomain(urlStr: string): string {
+  try {
+    return new URL(urlStr).hostname.replace(/^www\./, "")
+  } catch {
+    return urlStr
+  }
+}
+---
+
+{sources && sources.length > 0 && (
+  <div class={cn("my-10 rounded-xl border border-black/15 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.03] p-5 md:p-6", className)}>
+    <div class="flex items-center gap-2 mb-4">
+      <svg class="size-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+      <h3 class="text-xs font-bold uppercase tracking-wider text-black/75 dark:text-white/75 leading-none">
+        {title}
+      </h3>
+    </div>
+
+    <ul class="divide-y divide-black/5 dark:divide-white/5 space-y-2.5">
+      {sources.map((item) => {
+        const typeConfig = badgeStyles[item.type || "source"] || badgeStyles.source
+        const domain = getDomain(item.url)
+
+        return (
+          <li class="pt-2.5 first:pt-0 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs md:text-sm">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <!-- Source Type Pill (Source / Via / Docs) -->
+              <span class={cn("shrink-0 inline-flex items-center rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border", typeConfig.class)}>
+                {typeConfig.label}
+              </span>
+
+              <!-- Outbound Link -->
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-medium text-black dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 truncate underline underline-offset-4 decoration-black/20 dark:decoration-white/25 transition-colors"
+              >
+                {item.title}
+              </a>
+            </div>
+
+            <!-- Domain Citation & External Arrow -->
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="shrink-0 inline-flex items-center gap-1 font-mono text-xs text-black/45 dark:text-white/45 hover:text-black dark:hover:text-white transition-colors self-end sm:self-auto"
+            >
+              <span>{domain}</span>
+              <span class="text-xs">↗</span>
+            </a>
+          </li>
+        )
+      })}
+    </ul>
+  </div>
+)}

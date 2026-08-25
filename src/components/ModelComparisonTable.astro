@@ -1,0 +1,66 @@
+---
+import { cn } from "@lib/utils"
+
+interface ModelComparisonRow {
+  name: string
+  highlight?: boolean
+  developer: string
+  architecture: string
+  textScore: string
+  consistency: string
+  inpainting: string
+  pricing: string
+  api: string
+}
+
+interface Props {
+  rows: ModelComparisonRow[]
+  class?: string
+}
+
+const {
+  rows = [],
+  class: className,
+} = Astro.props
+---
+
+{rows && rows.length > 0 && (
+  <div class={cn("my-8 w-full overflow-x-auto rounded-xl border border-black/15 dark:border-white/20 shadow-sm", className)}>
+    <table class="w-full text-left text-xs md:text-sm border-collapse">
+      <thead class="bg-black/5 dark:bg-white/10 text-black dark:text-white uppercase text-[11px] font-bold tracking-wider">
+        <tr>
+          <th class="p-3.5 border-b border-black/10 dark:border-white/10">Model</th>
+          <th class="p-3.5 border-b border-black/10 dark:border-white/10">Architecture</th>
+          <th class="p-3.5 border-b border-black/10 dark:border-white/10">Typography</th>
+          <th class="p-3.5 border-b border-black/10 dark:border-white/10">Consistency</th>
+          <th class="p-3.5 border-b border-black/10 dark:border-white/10">Inpainting</th>
+          <th class="p-3.5 border-b border-black/10 dark:border-white/10">Cost / Image</th>
+          <th class="p-3.5 border-b border-black/10 dark:border-white/10">API Access</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-black/10 dark:divide-white/10">
+        {rows.map((row) => (
+          <tr class={cn(
+            "transition-colors",
+            row.highlight
+              ? "bg-emerald-500/[0.08] dark:bg-emerald-500/[0.12] font-medium"
+              : "hover:bg-black/[0.02] dark:hover:bg-white/[0.02]"
+          )}>
+            <td class="p-3.5 font-bold text-black dark:text-white flex items-center gap-1.5 whitespace-nowrap">
+              {row.highlight && (
+                <span class="size-2 rounded-full bg-emerald-500 shrink-0"></span>
+              )}
+              {row.name}
+            </td>
+            <td class="p-3.5 whitespace-nowrap text-black/80 dark:text-white/80">{row.architecture}</td>
+            <td class="p-3.5 whitespace-nowrap text-black/80 dark:text-white/80">{row.textScore}</td>
+            <td class="p-3.5 whitespace-nowrap text-black/80 dark:text-white/80">{row.consistency}</td>
+            <td class="p-3.5 whitespace-nowrap text-black/80 dark:text-white/80">{row.inpainting}</td>
+            <td class="p-3.5 whitespace-nowrap font-mono text-black/90 dark:text-white/90">{row.pricing}</td>
+            <td class="p-3.5 whitespace-nowrap text-black/80 dark:text-white/80">{row.api}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}

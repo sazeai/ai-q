@@ -1,10 +1,78 @@
 ---
 import { getCollection } from "astro:content";
+import { cn } from "@lib/utils";
 
-const allPosts = await getCollection("blog");
-const allTags = allPosts.map((tag) => tag.data.tags).flat();
+type Props = {
+  collection?: "blog" | "ai-models" | "all";
+  tags?: string[];
+  showCount?: boolean;
+  title?: string;
+  class?: string;
+};
 
-console.log(allTags);
+const {
+  collection = "blog",
+  tags: customTags,
+  showCount = true,
+  title,
+  class: className,
+} = Astro.props;
+
+let allTags: string[] = [];
+
+if (customTags && customTags.length > 0) {
+  allTags = customTags;
+} else {
+  if (collection === "all") {
+    const blogPosts = (await getCollection("blog")).filter((p) => !p.data.draft);
+    const modelPosts = (await getCollection("ai-models")).filter((p) => !p.data.draft);
+    allTags = [...blogPosts, ...modelPosts].flatMap((post) => post.data.tags || []);
+  } else {
+    const posts = (await getCollection(collection as "blog" | "ai-models")).filter(
+      (p) => !p.data.draft
+    );
+    allTags = posts.flatMap((post) => post.data.tags || []);
+  }
+}
+
+const tagCounts = allTags.reduce((acc, tag) => {
+  const normalized = tag.trim();
+  if (normalized) {
+    acc[normalized] = (acc[normalized] || 0) + 1;
+  }
+  return acc;
+}, {} as Record<string, number>);
+
+const sortedTags = Object.entries(tagCounts).sort((a, b) => {
+  return b[1] - a[1] || a[0].localeCompare(b[0]);
+});
+
+const targetHref = collection === "ai-models" ? "/ai-models" : "/blog";
 ---
 
-<span> </span>
+{
+  sortedTags.length > 0 && (
+    <div class={cn("space-y-2.5", className)}>
+      {title && (
+        <div class="text-xs uppercase font-semibold text-black/60 dark:text-white/60 tracking-wider">
+          {title}
+        </div>
+      )}
+      <div class="flex flex-wrap gap-2">
+        {sortedTags.map(([tag, count]) => (
+          <a
+            href={`${targetHref}?tag=${encodeURIComponent(tag)}`}
+            class="group flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full border border-black/15 dark:border-white/20 bg-black/5 dark:bg-white/10 hover:bg-black/10 hover:dark:bg-white/15 hover:border-black/30 dark:hover:border-white/30 text-black dark:text-white transition-all duration-200"
+          >
+            <span class="opacity-80 group-hover:opacity-100 font-medium">#{tag}</span>
+            {showCount && (
+              <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-black/10 dark:bg-white/20 opacity-70 group-hover:opacity-100">
+                {count}
+              </span>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  )
+}

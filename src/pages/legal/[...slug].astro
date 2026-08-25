@@ -3,6 +3,9 @@ import { type CollectionEntry, getCollection } from "astro:content"
 import PageLayout from "@layouts/PageLayout.astro"
 import TopLayout from "@layouts/TopLayout.astro"
 import BottomLayout from "@layouts/BottomLayout.astro"
+import TableOfContents from "@components/TableOfContents.astro"
+import Callout from "@components/Callout.astro"
+import Link from "@components/Link.astro"
 import { formatDate } from "@lib/utils"
 import { SITE } from "@consts"
 
@@ -19,24 +22,28 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<"legal">;
 const doc = Astro.props
 const { title, date } = doc.data
-const { Content } = await doc.render();
-
+const { Content, headings } = await doc.render();
 ---
 
 <PageLayout title={title} description={`${title} for ${SITE.TITLE}`}>
   <TopLayout>
     <div class="animate">
-      <div class="page-heading">
+      <div class="page-heading text-3xl">
         {title}
       </div>
-      <p class="font-normal opacity-75">
+      <p class="font-normal opacity-75 mt-1">
         Last updated: {formatDate(date)}
       </p>
     </div>
   </TopLayout>
   <BottomLayout>
-    <article class="animate">
-      <Content/>
-    </article>
+    <div class="animate">
+      {headings && headings.length > 0 && (
+        <TableOfContents headings={headings} />
+      )}
+      <article>
+        <Content components={{ Callout, Link }} />
+      </article>
+    </div>
   </BottomLayout>
 </PageLayout>

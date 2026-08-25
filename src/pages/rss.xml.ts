@@ -7,10 +7,10 @@ type Context = {
 }
 
 export async function GET(context: Context) {
-	const posts = await getCollection("blog")
-  const projects = await getCollection("projects")
+  const posts = await getCollection("blog")
+  const models = await getCollection("ai-models")
 
-  const items = [...posts, ...projects]
+  const items = [...posts, ...models]
 
   items.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
 
@@ -22,9 +22,9 @@ export async function GET(context: Context) {
       title: item.data.title,
       description: item.data.summary,
       pubDate: item.data.date,
-      link: item.slug.startsWith("blog")
+      link: item.collection === "blog"
         ? `/blog/${item.slug}/`
-        : `/projects/${item.slug}/`,
+        : `/ai-models/${item.slug}/`,
     })),
   })
 }
