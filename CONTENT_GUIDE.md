@@ -237,19 +237,23 @@ draft: false
 ```
 
 ### 9. `<AdUnit />` (Slash: `/ad`)
-**Use for:** CLS-safe Google AdSense placeholders between major sections.
+**Use for:** Responsive Google AdSense ad units between major sections. Automatically uses the configured live slot ID.
 
 ```jsx
-<AdUnit format="auto" slot="7483920194" label="Sponsored Guide Partner" />
+<AdUnit />
 ```
 
 ---
 
-## 4. SEO & Editorial Rules for AI Agents
+## 4. SEO, AdSense & Editorial Rules for AI Agents
 
 1. **R2 Image Hosting**: Always use `https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/` for image URLs.
 2. **Search-Intent Matching**:
    - For **3D / Avatar** topics: Always write 3D digital art, Pixar/Disney character models, and 3D glowing elements (no DSLR camera lenses).
    - For **Photorealistic** topics: Specify physical optics (85mm f/1.4, film stock, authentic skin pores).
 3. **Two-Tier Cards**: Use images only for the 3–5 featured showcase prompts; use sleek compact cards for the rest.
-4. **Code Validation**: Always run `npx astro check` before concluding.
+4. **Google AdSense Policy & Anti-Spam Placement**:
+   - Write `<AdUnit />` directly with zero boilerplate props.
+   - **Max Density**: Place at most **2 to 3 `<AdUnit />` tags per long article (1,500+ words)**.
+   - **Placement Separation**: Never place ads above the fold (directly under H1), never place consecutive ads, and always separate ad units by at least 3-4 content sections (500+ words).
+5. **Code Validation**: Always run `npx astro check` before concluding.

@@ -157,10 +157,10 @@ const SLASH_COMMANDS: SlashCommand[] = [
   },
   {
     id: "ad",
-    label: "Ad Placeholder",
+    label: "Ad Placement",
     icon: "📢",
-    description: "CLS-safe Google AdSense placeholder",
-    template: `<AdUnit format="auto" slot="7483920194" label="Sponsored Guide Partner" />`,
+    description: "Responsive Google AdSense unit (Auto-configured with default slot)",
+    template: `<AdUnit />`,
   },
 ]
 

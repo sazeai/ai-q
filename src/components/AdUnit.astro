@@ -10,20 +10,28 @@ interface Props {
 }
 
 const {
-  slot = "1234567890",
+  slot,
   format = "auto",
   label = "Advertisement",
   class: className,
 } = Astro.props
 
-const minHeightClass = {
-  rectangle: "min-h-[280px]",
-  horizontal: "min-h-[100px]",
-  fluid: "min-h-[250px]",
-  auto: "min-h-[250px]",
-}[format] || "min-h-[250px]"
+// Use provided slot, or fallback to global ADSENSE.DEFAULT_SLOT, or fallback to real slot
+const activeSlot =
+  slot &&
+  slot !== "1234567890" &&
+  !slot.startsWith("7483") &&
+  !slot.startsWith("9401") &&
+  !slot.startsWith("6192") &&
+  !slot.startsWith("1938")
+    ? slot
+    : ADSENSE.DEFAULT_SLOT || "8441706260"
 
-const isProduction = import.meta.env.PROD && ADSENSE.ENABLED && ADSENSE.CLIENT_ID && !ADSENSE.CLIENT_ID.includes("XXXX")
+const isProduction =
+  import.meta.env.PROD &&
+  ADSENSE.ENABLED &&
+  ADSENSE.CLIENT_ID &&
+  !ADSENSE.CLIENT_ID.includes("XXXX")
 ---
 
 <div class={cn("my-8 w-full flex flex-col items-center justify-center overflow-hidden", className)}>
@@ -31,27 +39,24 @@ const isProduction = import.meta.env.PROD && ADSENSE.ENABLED && ADSENSE.CLIENT_I
     {label}
   </span>
 
-  <div class={cn(
-    "w-full rounded-xl border border-dashed border-black/15 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.02] flex items-center justify-center overflow-hidden",
-    minHeightClass
-  )}>
+  <div class="w-full flex items-center justify-center overflow-hidden min-h-[100px] md:min-h-[250px]">
     {isProduction ? (
       <ins
         class="adsbygoogle"
-        style="display:block; width:100%;"
+        style="display:block; text-align:center; min-width:250px; width:100%;"
         data-ad-client={ADSENSE.CLIENT_ID}
-        data-ad-slot={slot}
+        data-ad-slot={activeSlot}
         data-ad-format={format}
         data-full-width-responsive="true"
       ></ins>
     ) : (
-      <div class="flex flex-col items-center justify-center p-6 text-center text-black/50 dark:text-white/50">
+      <div class="w-full rounded-xl border border-dashed border-black/15 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.02] flex flex-col items-center justify-center p-6 text-center text-black/50 dark:text-white/50 min-h-[120px]">
         <svg class="size-6 mb-2 stroke-current opacity-60" viewBox="0 0 24 24" fill="none" stroke-width="1.5">
           <rect width="20" height="14" x="2" y="5" rx="2"/>
           <line x1="2" x2="22" y1="10" y2="10"/>
         </svg>
         <span class="text-xs font-mono font-medium">Google AdSense Placement</span>
-        <span class="text-[11px] opacity-75 mt-0.5 font-mono">Slot: {slot} &bull; Format: {format}</span>
+        <span class="text-[11px] opacity-75 mt-0.5 font-mono">Slot: {activeSlot} &bull; Format: {format}</span>
       </div>
     )}
   </div>
@@ -59,6 +64,18 @@ const isProduction = import.meta.env.PROD && ADSENSE.ENABLED && ADSENSE.CLIENT_I
 
 {isProduction && (
   <script is:inline>
-    (adsbygoogle = window.adsbygoogle || []).push({});
+    (function() {
+      function pushAd() {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {}
+      }
+      if (document.readyState === 'complete') {
+        pushAd();
+      } else {
+        window.addEventListener('load', pushAd);
+      }
+      document.addEventListener('astro:page-load', pushAd);
+    })();
   </script>
 )}

@@ -31,6 +31,7 @@ export type SEOConfig = {
 
 export type AdSenseConfig = {
   CLIENT_ID: string
+  DEFAULT_SLOT?: string
   ENABLED: boolean
 }
 

@@ -21,6 +21,7 @@ export const SEO: SEOConfig = {
 // Google AdSense Configuration
 export const ADSENSE: AdSenseConfig = {
   CLIENT_ID: "ca-pub-7915372771416695",
+  DEFAULT_SLOT: "8441706260",
   ENABLED: true,
 }
 
