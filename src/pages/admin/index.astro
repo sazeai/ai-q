@@ -1,0 +1,41 @@
+---
+import PageLayout from "@layouts/PageLayout.astro";
+import ArticleEditor from "@components/admin/ArticleEditor";
+
+export const prerender = false;
+---
+
+<PageLayout
+  title="Admin Article Editor"
+  description="AI-Q Admin Suite: Slash command article editor and R2 image uploader"
+>
+  <div class="w-full max-w-[1600px] mx-auto px-4 py-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="text-2xl font-bold text-black dark:text-white">
+          AI-Q Next-Level Article Editor
+        </h1>
+        <p class="text-xs text-black/60 dark:text-white/60">
+          Type <code class="px-1 py-0.5 rounded bg-black/5 dark:bg-white/10 font-mono font-bold text-emerald-600 dark:text-emerald-400">/</code> anywhere to insert PromptCards, Callouts, Scorecards, or upload R2 images.
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href="/blog"
+          class="text-xs font-medium px-3 py-1.5 rounded-lg border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+        >
+          ← View Blog
+        </a>
+        <a
+          href="/ai-models"
+          class="text-xs font-medium px-3 py-1.5 rounded-lg border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+        >
+          View Models →
+        </a>
+      </div>
+    </div>
+
+    <!-- Interactive SolidJS Editor -->
+    <ArticleEditor client:load />
+  </div>
+</PageLayout>

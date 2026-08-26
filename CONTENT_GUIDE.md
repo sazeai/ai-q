@@ -7,16 +7,20 @@
 
 ## 1. Quick Directory Reference
 
-| Content Type | File Location | Image Assets Location |
+| Content Type | File Location | Image CDN Location (Cloudflare R2) |
 | :--- | :--- | :--- |
-| **Blog Posts (Prompts / Guides)** | `src/content/blog/<slug>/index.mdx` | `public/images/prompts/<image-name>.jpg` |
-| **AI Model Experiments** | `src/content/ai-models/<slug>/index.mdx` | `public/images/models/<image-name>.jpg` |
+| **Blog Posts (Prompts / Guides)** | `src/content/blog/<slug>/index.mdx` | `https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/prompts/<image-name>.jpg` |
+| **AI Model Experiments** | `src/content/ai-models/<slug>/index.mdx` | `https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/models/<image-name>.jpg` |
+
+> ⚠️ **Cloudflare R2 Image CDN Rule**: All images must be referenced from the Cloudflare R2 public CDN URL: `https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/`. Do not store bulky images inside Git.
 
 > ⚠️ **Zero-Import Rule**: All UI components listed below are **globally injected** into MDX via `src/layouts/ArticleBottomLayout.astro`. **DO NOT write `import ... from ...` inside `.mdx` files.** Simply use the tags directly.
 
 > ⚠️ **Pure-Template Rule**: Components do NOT store hardcoded data. Pass all data (scores, tables, specs, pros/cons, prompts) directly via props in your `.mdx` file.
 
 > ⚠️ **Anti-Duplication Rule**: NEVER repeat the same placeholder image across multiple cards or articles. If you don't have a unique, authentic image for a prompt, use the compact `<PromptCard />` without the `image` prop.
+
+> 🛠️ **Interactive Editor**: You can also write, test, and upload images interactively at the `/admin` dashboard.
 
 ---
 
@@ -26,19 +30,20 @@
 
 ```yaml
 ---
-title: "Google Gemini AI Photo Editing Prompts Copy Paste: 30+ Trending 3D & Couple Prompts (2026)"
-summary: "Discover 30+ trending Google Gemini AI photo editing prompts. Copy and paste viral prompts for aesthetic couple photos, 3D avatars, cyberpunk portraits, and cinematic lighting."
-date: "Aug 25 2026"
+title: "Google Gemini 3D Boy & Girl AI Photo Editing Prompts: 30+ Trending 3D Avatars & Bike Prompts (2026)"
+summary: "Discover 30+ viral Google Gemini 3D boy and girl AI photo editing prompts. Copy paste trending prompts for 3D Pixar characters on bikes, glowing neon wings on king chairs, and 3D social media avatars."
+date: "Aug 26 2026"
 updatedDate: "Aug 26 2026"
-image: "/images/prompts/gemini-couple-photo.jpg"
+image: "https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/prompts/gemini-3d-boy-bike.jpg"
 tags:
   - "Google Gemini"
+  - "3D Boy Prompt"
+  - "3D Girl Avatar"
   - "AI Photo Editing"
   - "Prompt Copy Paste"
-  - "Couple Photo Prompts"
   - "Trending Prompts"
-author: "AI-Q Team"
-canonicalUrl: "https://ai-q.in/blog/google-gemini-ai-photo-editing-prompts-guide"
+author: "AI-Q Editorial Labs"
+canonicalUrl: "https://ai-q.in/blog/google-gemini-3d-boy-girl-ai-photo-editing-prompts"
 sources:
   - title: "Google DeepMind Imagen 3 Technical Paper"
     url: "https://deepmind.google/technologies/imagen-3/"
@@ -47,9 +52,9 @@ sources:
     url: "https://gemini.google.com"
     type: "source"
 faq:
-  - question: "How do I use Google Gemini for photo editing?"
-    answer: "Open Google Gemini, click the image upload icon (+), attach your original photo, and paste one of our structured editing prompts describing the exact lighting, background, or outfit changes you desire."
-  - question: "Are these Gemini AI prompts free to copy and paste?"
+  - question: "How do I use Google Gemini for 3D photo editing?"
+    answer: "Open Google Gemini, tap the '+' icon to upload your original reference selfie, and paste one of our structured 3D prompt templates."
+  - question: "Are these Gemini 3D prompts free to copy and paste?"
     answer: "Yes, all prompt templates on AI-Q are 100% free for personal and commercial creative workflows."
 draft: false
 ---
@@ -63,7 +68,7 @@ title: "xAI Grok Imagine Image 2.0 (Aurora Engine) Review: Architecture, Benchma
 summary: "An exhaustive technical benchmark of xAI Grok Imagine Image 2.0. We test the new Autoregressive MoE Aurora architecture, photorealism, typography, multi-reference consistency, and API pricing."
 date: "Aug 25 2026"
 updatedDate: "Aug 26 2026"
-image: "/images/models/grok-photorealism.jpg"
+image: "https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/models/grok-photorealism.jpg"
 tags:
   - "xAI Grok"
   - "Grok Imagine"
@@ -90,57 +95,66 @@ draft: false
 
 ---
 
-## 3. UI Component Catalog & Exact Usage
+## 3. UI Component Catalog & Slash Commands (`/`)
 
-### 1. `<PromptCategoryNav />`
+### 1. `<PromptCategoryNav />` (Slash: `/category-nav` or `/nav`)
 **Use for:** Top horizontal-scroll quick jump navigation pills on long prompt guides (especially for mobile users).
 
 ```jsx
 <PromptCategoryNav
   title="Quick Jump to Category"
   categories={[
-    { title: "Couples & Romance", id: "category-1-couples", count: 6, icon: "💑" },
-    { title: "Men's DP & Streetwear", id: "category-2-men", count: 6, icon: "🔥" },
-    { title: "Women's & Festive Saree", id: "category-3-women", count: 6, icon: "✨" },
-    { title: "3D Avatars & LinkedIn", id: "category-4-avatars", count: 5, icon: "💼" },
-    { title: "Travel Transformations", id: "category-5-travel", count: 5, icon: "✈️" },
-    { title: "90s Vintage Film", id: "category-6-film", count: 5, icon: "📸" },
+    { title: "3D Boys on Bikes", id: "category-1-3d-boys", count: 5, icon: "🏍️" },
+    { title: "Cute 3D Girls & Pets", id: "category-2-3d-girls", count: 5, icon: "🐱" },
+    { title: "3D Neon Wings & Thrones", id: "category-3-wings-throne", count: 5, icon: "🪽" },
+    { title: "3D Social Media Avatars", id: "category-4-social-avatars", count: 5, icon: "📱" },
+    { title: "3D Romantic Couples", id: "category-5-3d-couples", count: 5, icon: "💖" },
+    { title: "3D Festive & Royal Indian", id: "category-6-3d-festive", count: 5, icon: "🪔" },
   ]}
 />
 ```
 
-### 2. `<PromptCard />`
+### 2. `<PromptCard />` (Slash: `/prompt`)
 **Use for:** Prompts with 1-click clipboard copy, model badge, parameters drawer, aspect ratio pill, and optional preview image.
 
-**Showcase Mode (with authentic output image):**
+**Showcase Mode (with authentic R2 CDN output image):**
 ```jsx
 <PromptCard
-  title="Cinematic Golden Hour Couple Portrait"
-  model="Google Gemini"
-  aspectRatio="16:9"
-  tags={["Couple", "Mumbai", "Golden Hour", "Canon 85mm"]}
-  prompt="Ultra-realistic 8k photo of a stylish young Indian couple walking along Marine Drive Mumbai during golden hour, cinematic warm sunlight, natural smiles, contemporary street fashion, Canon EOS R5 85mm f/1.4 lens, authentic skin texture, soft bokeh background"
-  negativePrompt="oversaturated, plastic skin, cartoon, anime, extra limbs, blurry face, distorted hands"
-  seed="482910"
+  title="3D Pixar Boy on Black Sports Motorcycle with 'KING' Hoodie"
+  model="Google Gemini / Imagen 3"
+  aspectRatio="1:1"
+  tags={["3D Pixar", "3D Bike", "Custom Hoodie", "Boys 3D DP"]}
+  prompt="A cute 3D stylized character of a cool teenage boy wearing a black oversized hoodie with bold white text 'KING' printed on the chest, ripped light-blue denim jeans, and stylish orange sneakers. He is sitting casually with one leg over a matte-black 3D stylized sports motorcycle on a clean city street. Cute Pixar 3D animated movie character design, smooth vinyl and clay material textures, volumetric studio gradient lighting, 8k digital 3D render."
+  negativePrompt="photorealistic, 2d cartoon, ugly face, distorted fingers, low poly"
+  seed="948201"
   cfgScale="7.0"
-  image="/images/prompts/gemini-couple-photo.jpg"
-  imageAlt="Cinematic couple photo generated by Google Gemini"
+  image="https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/prompts/gemini-3d-boy-bike.jpg"
+  imageAlt="Cute 3D Pixar boy in black KING hoodie sitting on sports motorcycle"
 />
 ```
 
 **Compact Mode (clean, typography-first, fast copy for secondary prompts):**
 ```jsx
 <PromptCard
-  title="Prompt #2: Jaipur Amber Fort Heritage Sandstone Jharokha"
-  model="Google Gemini"
-  aspectRatio="3:4"
-  tags={["Royal Heritage", "Jaipur", "Velvet Bandhgala"]}
-  prompt="A 3:4 vertical editorial portrait framed at eye level of a couple on an ornate sandstone royal palace balcony at Amber Fort Jaipur during twilight. He wears a tailored royal navy velvet bandhgala; she wears a blush pink Banarasi silk lehenga with intricate zardozi embroidery. Hasselblad 80mm optical lens, authentic fabric drape, 8k photography."
-  negativePrompt="deformed hands, plastic skin, cartoon face, flat lighting"
+  title="Prompt #2: 3D Cyberpunk Boy on Glowing Neon Superbike"
+  model="Google Gemini / Flux.1"
+  aspectRatio="1:1"
+  tags={["3D Cyberpunk", "Neon Bike", "Glowing Wheels"]}
+  prompt="A 1:1 stylized 3D digital illustration of a cool boy character with spiky hair, wearing a sleek black technical jacket with glowing cyan neon trims and custom name tag 'ALEX'. He is sitting on a futuristic 3D cyberpunk superbike with glowing neon blue wheels. Smooth 3D render, Pixar Disney character design, Unreal Engine 5 stylized lighting."
+  negativePrompt="deformed bike, plastic skin, cartoon, blurry, low resolution"
 />
 ```
 
-### 3. `<ModelSpecs />`
+### 3. `<Callout />` (Slash: `/callout`)
+**Use for:** Highlighted callout boxes (`info`, `tip`, `warning`, `danger`).
+
+```jsx
+<Callout type="tip">
+  **Pro-Tip**: When generating 3D Pixar avatars, use smooth clay shaders and volumetric gradient rim lighting rather than realistic camera parameters.
+</Callout>
+```
+
+### 4. `<ModelSpecs />` (Slash: `/specs`)
 **Use for:** Hardware, architecture, context window, resolution, pricing, and API specs table.
 
 ```jsx
@@ -152,15 +166,12 @@ draft: false
     { label: "Architecture", value: "Autoregressive MoE Vision Transformer (Aurora)" },
     { label: "Release Version", value: "v2.0 (August 2026)" },
     { label: "Max Resolution", value: "2048 x 2048 (Custom Aspect Ratios)" },
-    { label: "Multi-Image Reference", value: "Supported (Up to 5 Reference Images)" },
-    { label: "Inpainting & Editing", value: "Region-Level Native Editing & Object Swap" },
-    { label: "API Availability", value: "OpenAI SDK Compatible REST API (api.x.ai/v1)" },
     { label: "Pricing / Cost", value: "$0.02 - $0.04 per generation" },
   ]}
 />
 ```
 
-### 4. `<ScoreRating />`
+### 5. `<ScoreRating />` (Slash: `/score`)
 **Use for:** 10-segment precision telemetry benchmark scorecards with overall rating badge.
 
 ```jsx
@@ -178,7 +189,7 @@ draft: false
 />
 ```
 
-### 5. `<ProsCons />`
+### 6. `<ProsCons />` (Slash: `/proscons`)
 **Use for:** 2-column comparative analysis of model strengths and limitations.
 
 ```jsx
@@ -189,127 +200,56 @@ draft: false
     "Industry-best multi-reference consistency (up to 5 image inputs)",
     "Sublime photorealism with authentic skin pores and natural teeth",
     "Flawless in-image typography and complex layout generation",
-    "Standard OpenAI SDK compatible developer REST API",
   ]}
   cons={[
     "Closed-source proprietary model weights (cannot be locally hosted)",
     "Requires paid API credits or active X Premium subscription",
-    "Higher latency on 2048x2048 high-resolution batch generations",
   ]}
 />
 ```
 
-### 6. `<ModelComparisonTable />`
-**Use for:** Responsive head-to-head comparison matrices with highlighted primary row.
-
-```jsx
-<ModelComparisonTable
-  rows={[
-    {
-      name: "xAI Grok Imagine 2.0",
-      highlight: true,
-      developer: "xAI",
-      architecture: "Autoregressive MoE",
-      textScore: "8.7/10 (High)",
-      consistency: "5 Image References",
-      inpainting: "Region-level Native",
-      pricing: "$0.02 - $0.04",
-      api: "OpenAI Compatible",
-    },
-    {
-      name: "Midjourney v6.1",
-      highlight: false,
-      developer: "Midjourney Inc",
-      architecture: "Diffusion-Transformer",
-      textScore: "8.5/10 (Good)",
-      consistency: "Vary Region / --cref",
-      inpainting: "Discord Inpaint Tool",
-      pricing: "$10-$120/mo",
-      api: "No Official Public API",
-    }
-  ]}
-/>
-```
-
-### 7. `<ComparisonSlider />`
+### 7. `<ComparisonSlider />` (Slash: `/slider`)
 **Use for:** Interactive before/after split slider (use ONLY when you have authentic before/after image pairs).
 
 ```jsx
 <ComparisonSlider
-  before="/images/prompts/gemini-slider-before.jpg"
-  after="/images/prompts/gemini-slider-after.jpg"
+  before="https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/prompts/gemini-slider-before.jpg"
+  after="https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/prompts/gemini-slider-after.jpg"
   beforeLabel="Original Photo"
   afterLabel="AI Inpainted & Enhanced"
   alt="AI Inpainting and Background Replacement Demonstration"
 />
 ```
 
-### 8. `<ImageGrid />`
-**Use for:** Responsive 2, 3, or 4-column side-by-side gallery.
-
-```jsx
-<ImageGrid columns={2}>
-  <div class="rounded-xl border border-black/15 dark:border-white/20 overflow-hidden bg-black/5 dark:bg-white/5">
-    <img src="/images/models/grok-consistency-1.jpg" alt="Scene 1: Tokyo Winter" class="aspect-square object-cover w-full" />
-    <div class="p-3">
-      <span class="text-xs font-semibold text-black dark:text-white block">Scene 1: Tokyo Street</span>
-      <span class="text-[11px] text-black/60 dark:text-white/60">Green coat, snowy daylight</span>
-    </div>
-  </div>
-  <div class="rounded-xl border border-black/15 dark:border-white/20 overflow-hidden bg-black/5 dark:bg-white/5">
-    <img src="/images/models/grok-consistency-2.jpg" alt="Scene 2: Santorini" class="aspect-square object-cover w-full" />
-    <div class="p-3">
-      <span class="text-xs font-semibold text-black dark:text-white block">Scene 2: Santorini Terrace</span>
-      <span class="text-[11px] text-black/60 dark:text-white/60">Cream dress, Mediterranean sun</span>
-    </div>
-  </div>
-</ImageGrid>
-```
-
-### 9. `<Callout />`
-**Use for:** Highlighted callout boxes (`info`, `tip`, `warning`, `danger`).
-
-```jsx
-<Callout type="tip">
-  **Pro-Tip**: When generating Indian couple portraits, specifying 85mm optical focal length and authentic skin undertones avoids the oversaturated artificial sheen.
-</Callout>
-```
-
-### 10. `<FAQAccordion />`
-**Use for:** Interactive expandable FAQ items (ensure items match your frontmatter `faq` schema for rich Google snippets).
+### 8. `<FAQAccordion />` (Slash: `/faq`)
+**Use for:** Interactive expandable FAQ items matching frontmatter `faq` schema.
 
 ```jsx
 <FAQAccordion
   title="Frequently Asked Questions (FAQ)"
   items={[
     {
-      question: "How do I get an API key for Grok Imagine 2.0?",
-      answer: "Create an account on the xAI Developer Console (https://console.x.ai), add billing credits, and generate an API key from the API Keys tab."
+      question: "How do I use Google Gemini for 3D photo editing?",
+      answer: "Open Google Gemini, tap the '+' icon to upload your selfie, and paste one of our structured 3D prompt templates."
     }
   ]}
 />
 ```
 
-### 11. `<AdUnit />`
+### 9. `<AdUnit />` (Slash: `/ad`)
 **Use for:** CLS-safe Google AdSense placeholders between major sections.
 
 ```jsx
-<AdUnit format="auto" slot="7483920194" label="Sponsored Partner" />
+<AdUnit format="auto" slot="7483920194" label="Sponsored Guide Partner" />
 ```
-
-### 12. `<ArticleSources />`
-**Use for:** Journalistic Sources & Via citation block at the end of the post.
 
 ---
 
-## 4. SEO & Editorial Rules
+## 4. SEO & Editorial Rules for AI Agents
 
-1. **Length**: Aim for **1,500 - 3,000+ words** for pillar guides and model benchmarks.
-2. **Authority Citations (E-E-A-T)**:
-   - Always populate the `sources` frontmatter array with official documentation, developer consoles, papers, or discovery sources.
-   - Types allowed: `source` (primary news), `via` (reporting outlet), `docs` (technical docs), `paper` (whitepapers), `reference` (tools/platforms).
-3. **No Fake / Duplicated Assets**:
-   - Every image referenced must genuinely belong to the subject being reviewed.
-   - Do NOT reuse the same slider or sample output across different AI models.
-4. **Code Validation**:
-   - Always run `npx astro check` and `npm run build` after authoring to guarantee 0 errors.
+1. **R2 Image Hosting**: Always use `https://pub-554b6178bcfb4c0b8facf2f1ae88f4c8.r2.dev/` for image URLs.
+2. **Search-Intent Matching**:
+   - For **3D / Avatar** topics: Always write 3D digital art, Pixar/Disney character models, and 3D glowing elements (no DSLR camera lenses).
+   - For **Photorealistic** topics: Specify physical optics (85mm f/1.4, film stock, authentic skin pores).
+3. **Two-Tier Cards**: Use images only for the 3–5 featured showcase prompts; use sleek compact cards for the rest.
+4. **Code Validation**: Always run `npx astro check` before concluding.

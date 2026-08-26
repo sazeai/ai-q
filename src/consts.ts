@@ -15,18 +15,18 @@ export const SEO: SEOConfig = {
   OG_IMAGE: "/open-graph.jpg",
   TWITTER_HANDLE: "@9to5_Dad",
   LOCALE: "en_IN",
-  GOOGLE_SITE_VERIFICATION: "GOOGLE_SEARCH_CONSOLE_VERIFICATION_TOKEN",
+  GOOGLE_SITE_VERIFICATION: "IYrAnBUPOVgFS5G3dPXzyclAiVQNfqDq-TjXdQgDxXo",
 }
 
 // Google AdSense Configuration
 export const ADSENSE: AdSenseConfig = {
-  CLIENT_ID: "ca-pub-XXXXXXXXXXXXXXXX",
+  CLIENT_ID: "ca-pub-7915372771416695",
   ENABLED: true,
 }
 
 // Analytics Configuration
 export const ANALYTICS: AnalyticsConfig = {
-  GOOGLE_ANALYTICS_ID: "G-XXXXXXXXXX",
+  GOOGLE_ANALYTICS_ID: "G-1B1NCYJZ24",
 }
 
 // Blog / Prompts Page
