@@ -4,6 +4,7 @@ import TableOfContents from "@components/TableOfContents.astro"
 import Callout from "@components/Callout.astro"
 import Link from "@components/Link.astro"
 import PromptCard from "@components/PromptCard.astro"
+import PromptCategoryNav from "@components/PromptCategoryNav.astro"
 import ImageGrid from "@components/ImageGrid.astro"
 import ComparisonSlider from "@components/ComparisonSlider.astro"
 import FAQAccordion from "@components/FAQAccordion.astro"
@@ -60,6 +61,7 @@ const next = items[(index + 1) % items.length]
   <article class="prose dark:prose-invert max-w-none">
     <Content components={{
       PromptCard,
+      PromptCategoryNav,
       ImageGrid,
       ComparisonSlider,
       FAQAccordion,

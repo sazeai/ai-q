@@ -16,6 +16,8 @@
 
 > ⚠️ **Pure-Template Rule**: Components do NOT store hardcoded data. Pass all data (scores, tables, specs, pros/cons, prompts) directly via props in your `.mdx` file.
 
+> ⚠️ **Anti-Duplication Rule**: NEVER repeat the same placeholder image across multiple cards or articles. If you don't have a unique, authentic image for a prompt, use the compact `<PromptCard />` without the `image` prop.
+
 ---
 
 ## 2. Frontmatter Schemas
@@ -24,10 +26,10 @@
 
 ```yaml
 ---
-title: "Google Gemini AI Photo Editing Prompts Copy Paste: 50+ Trending 3D & Couple Prompts (2026)"
-summary: "Discover 50+ trending Google Gemini AI photo editing prompts. Copy and paste viral prompts for aesthetic couple photos, 3D avatars, cyberpunk portraits, and cinematic lighting."
+title: "Google Gemini AI Photo Editing Prompts Copy Paste: 30+ Trending 3D & Couple Prompts (2026)"
+summary: "Discover 30+ trending Google Gemini AI photo editing prompts. Copy and paste viral prompts for aesthetic couple photos, 3D avatars, cyberpunk portraits, and cinematic lighting."
 date: "Aug 25 2026"
-updatedDate: "Aug 25 2026"
+updatedDate: "Aug 26 2026"
 image: "/images/prompts/gemini-couple-photo.jpg"
 tags:
   - "Google Gemini"
@@ -60,7 +62,7 @@ draft: false
 title: "xAI Grok Imagine Image 2.0 (Aurora Engine) Review: Architecture, Benchmarks, API & Inpainting"
 summary: "An exhaustive technical benchmark of xAI Grok Imagine Image 2.0. We test the new Autoregressive MoE Aurora architecture, photorealism, typography, multi-reference consistency, and API pricing."
 date: "Aug 25 2026"
-updatedDate: "Aug 25 2026"
+updatedDate: "Aug 26 2026"
 image: "/images/models/grok-photorealism.jpg"
 tags:
   - "xAI Grok"
@@ -77,15 +79,6 @@ sources:
   - title: "Elon Musk Release Announcement on X"
     url: "https://x.com/elonmusk"
     type: "source"
-  - title: "xAI Developer Console & Playground"
-    url: "https://console.x.ai"
-    type: "via"
-  - title: "Black Forest Labs FLUX.1 Technical Architecture"
-    url: "https://blackforestlabs.ai"
-    type: "paper"
-  - title: "fal.ai High-Throughput Serverless Inference Engine"
-    url: "https://fal.ai"
-    type: "reference"
 faq:
   - question: "What architecture powers xAI Grok Imagine Image 2.0?"
     answer: "Grok Imagine 2.0 is powered by xAI's proprietary Aurora engine, an autoregressive Mixture-of-Experts (MoE) vision transformer."
@@ -99,14 +92,33 @@ draft: false
 
 ## 3. UI Component Catalog & Exact Usage
 
-### 1. `<PromptCard />`
-**Use for:** Prompts with 1-click clipboard copy, model badge, parameters drawer, aspect ratio pill, and preview image.
+### 1. `<PromptCategoryNav />`
+**Use for:** Top horizontal-scroll quick jump navigation pills on long prompt guides (especially for mobile users).
 
+```jsx
+<PromptCategoryNav
+  title="Quick Jump to Category"
+  categories={[
+    { title: "Couples & Romance", id: "category-1-couples", count: 6, icon: "💑" },
+    { title: "Men's DP & Streetwear", id: "category-2-men", count: 6, icon: "🔥" },
+    { title: "Women's & Festive Saree", id: "category-3-women", count: 6, icon: "✨" },
+    { title: "3D Avatars & LinkedIn", id: "category-4-avatars", count: 5, icon: "💼" },
+    { title: "Travel Transformations", id: "category-5-travel", count: 5, icon: "✈️" },
+    { title: "90s Vintage Film", id: "category-6-film", count: 5, icon: "📸" },
+  ]}
+/>
+```
+
+### 2. `<PromptCard />`
+**Use for:** Prompts with 1-click clipboard copy, model badge, parameters drawer, aspect ratio pill, and optional preview image.
+
+**Showcase Mode (with authentic output image):**
 ```jsx
 <PromptCard
   title="Cinematic Golden Hour Couple Portrait"
   model="Google Gemini"
   aspectRatio="16:9"
+  tags={["Couple", "Mumbai", "Golden Hour", "Canon 85mm"]}
   prompt="Ultra-realistic 8k photo of a stylish young Indian couple walking along Marine Drive Mumbai during golden hour, cinematic warm sunlight, natural smiles, contemporary street fashion, Canon EOS R5 85mm f/1.4 lens, authentic skin texture, soft bokeh background"
   negativePrompt="oversaturated, plastic skin, cartoon, anime, extra limbs, blurry face, distorted hands"
   seed="482910"
@@ -116,7 +128,19 @@ draft: false
 />
 ```
 
-### 2. `<ModelSpecs />`
+**Compact Mode (clean, typography-first, fast copy for secondary prompts):**
+```jsx
+<PromptCard
+  title="Prompt #2: Jaipur Amber Fort Heritage Sandstone Jharokha"
+  model="Google Gemini"
+  aspectRatio="3:4"
+  tags={["Royal Heritage", "Jaipur", "Velvet Bandhgala"]}
+  prompt="A 3:4 vertical editorial portrait framed at eye level of a couple on an ornate sandstone royal palace balcony at Amber Fort Jaipur during twilight. He wears a tailored royal navy velvet bandhgala; she wears a blush pink Banarasi silk lehenga with intricate zardozi embroidery. Hasselblad 80mm optical lens, authentic fabric drape, 8k photography."
+  negativePrompt="deformed hands, plastic skin, cartoon face, flat lighting"
+/>
+```
+
+### 3. `<ModelSpecs />`
 **Use for:** Hardware, architecture, context window, resolution, pricing, and API specs table.
 
 ```jsx
@@ -136,7 +160,7 @@ draft: false
 />
 ```
 
-### 3. `<ScoreRating />`
+### 4. `<ScoreRating />`
 **Use for:** 10-segment precision telemetry benchmark scorecards with overall rating badge.
 
 ```jsx
@@ -154,7 +178,7 @@ draft: false
 />
 ```
 
-### 4. `<ProsCons />`
+### 5. `<ProsCons />`
 **Use for:** 2-column comparative analysis of model strengths and limitations.
 
 ```jsx
@@ -175,7 +199,7 @@ draft: false
 />
 ```
 
-### 5. `<ModelComparisonTable />`
+### 6. `<ModelComparisonTable />`
 **Use for:** Responsive head-to-head comparison matrices with highlighted primary row.
 
 ```jsx
@@ -202,24 +226,13 @@ draft: false
       inpainting: "Discord Inpaint Tool",
       pricing: "$10-$120/mo",
       api: "No Official Public API",
-    },
-    {
-      name: "FLUX.1 Pro",
-      highlight: false,
-      developer: "Black Forest Labs",
-      architecture: "Hybrid DiT Diffusion",
-      textScore: "9.2/10 (Superb)",
-      consistency: "IP-Adapter / LoRA",
-      inpainting: "Flux Inpaint Models",
-      pricing: "$0.05 / image",
-      api: "Replicate / BFL API",
     }
   ]}
 />
 ```
 
-### 6. `<ComparisonSlider />`
-**Use for:** Interactive before/after split slider (great for inpainting, upscaling, or editing comparisons).
+### 7. `<ComparisonSlider />`
+**Use for:** Interactive before/after split slider (use ONLY when you have authentic before/after image pairs).
 
 ```jsx
 <ComparisonSlider
@@ -231,7 +244,7 @@ draft: false
 />
 ```
 
-### 7. `<ImageGrid />`
+### 8. `<ImageGrid />`
 **Use for:** Responsive 2, 3, or 4-column side-by-side gallery.
 
 ```jsx
@@ -253,7 +266,7 @@ draft: false
 </ImageGrid>
 ```
 
-### 8. `<Callout />`
+### 9. `<Callout />`
 **Use for:** Highlighted callout boxes (`info`, `tip`, `warning`, `danger`).
 
 ```jsx
@@ -262,7 +275,7 @@ draft: false
 </Callout>
 ```
 
-### 9. `<FAQAccordion />`
+### 10. `<FAQAccordion />`
 **Use for:** Interactive expandable FAQ items (ensure items match your frontmatter `faq` schema for rich Google snippets).
 
 ```jsx
@@ -272,35 +285,20 @@ draft: false
     {
       question: "How do I get an API key for Grok Imagine 2.0?",
       answer: "Create an account on the xAI Developer Console (https://console.x.ai), add billing credits, and generate an API key from the API Keys tab."
-    },
-    {
-      question: "Can I use Grok Imagine for commercial print-on-demand?",
-      answer: "Yes, generations made via the paid xAI API are fully licensed for commercial use."
     }
   ]}
 />
 ```
 
-### 10. `<AdUnit />`
+### 11. `<AdUnit />`
 **Use for:** CLS-safe Google AdSense placeholders between major sections.
 
 ```jsx
 <AdUnit format="auto" slot="7483920194" label="Sponsored Partner" />
 ```
 
-### 11. `<ArticleSources />`
-**Use for:** Journalistic Sources & Via citation block at the end of the post (automatically rendered if `sources` is present in frontmatter).
-
-```jsx
-<ArticleSources
-  title="Sources & Verification"
-  sources={[
-    { title: "Official Documentation", url: "https://docs.x.ai", type: "docs" },
-    { title: "Release Announcement", url: "https://x.com/elonmusk", type: "source" },
-    { title: "Serverless Inference", url: "https://fal.ai", type: "reference" }
-  ]}
-/>
-```
+### 12. `<ArticleSources />`
+**Use for:** Journalistic Sources & Via citation block at the end of the post.
 
 ---
 
@@ -310,11 +308,8 @@ draft: false
 2. **Authority Citations (E-E-A-T)**:
    - Always populate the `sources` frontmatter array with official documentation, developer consoles, papers, or discovery sources.
    - Types allowed: `source` (primary news), `via` (reporting outlet), `docs` (technical docs), `paper` (whitepapers), `reference` (tools/platforms).
-3. **Internal & External Links**:
-   - Link externally to official platforms ([xAI](https://docs.x.ai), [fal.ai](https://fal.ai), [Replicate](https://replicate.com), [Hugging Face](https://huggingface.co)).
-   - Link internally to relevant blog posts (`/blog/...`) or AI model tests (`/ai-models/...`).
-4. **Static Images**:
-   - Save all static images to `public/images/prompts/` or `public/images/models/`.
-   - Reference them using absolute static URLs (e.g. `/images/prompts/my-image.jpg`).
-5. **Code Validation**:
+3. **No Fake / Duplicated Assets**:
+   - Every image referenced must genuinely belong to the subject being reviewed.
+   - Do NOT reuse the same slider or sample output across different AI models.
+4. **Code Validation**:
    - Always run `npx astro check` and `npm run build` after authoring to guarantee 0 errors.

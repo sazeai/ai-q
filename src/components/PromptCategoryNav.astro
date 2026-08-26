@@ -1,0 +1,64 @@
+---
+import { cn } from "@lib/utils"
+
+export interface CategoryItem {
+  title: string
+  id: string
+  count?: number
+  icon?: string
+}
+
+interface Props {
+  categories: CategoryItem[]
+  title?: string
+  class?: string
+}
+
+const {
+  categories,
+  title = "Jump to Category",
+  class: className,
+} = Astro.props
+---
+
+<div class={cn("my-6 rounded-xl border border-black/15 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.03] p-3 md:p-4 backdrop-blur-sm", className)}>
+  <div class="flex items-center gap-2 mb-2.5 px-1">
+    <svg class="size-4 stroke-current opacity-70" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+    </svg>
+    <span class="text-xs font-semibold uppercase tracking-wider text-black/80 dark:text-white/80">
+      {title}
+    </span>
+  </div>
+
+  <div class="flex flex-nowrap md:flex-wrap items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 scrollbar-thin no-scrollbar touch-pan-x">
+    {categories.map((cat) => (
+      <a
+        href={`#${cat.id}`}
+        class="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-black/15 dark:border-white/20 bg-white dark:bg-neutral-900/90 px-3 py-1.5 text-xs font-medium text-black/85 dark:text-white/85 shadow-sm transition-all duration-200 hover:border-black/35 hover:bg-black/5 hover:text-black dark:hover:border-white/40 dark:hover:bg-white/10 dark:hover:text-white active:scale-95"
+      >
+        {cat.icon && (
+          <span class="text-xs">{cat.icon}</span>
+        )}
+        <span>{cat.title}</span>
+        {cat.count !== undefined && (
+          <span class="ml-0.5 rounded-full bg-black/5 dark:bg-white/10 px-1.5 py-0.2 text-[10px] font-semibold text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white">
+            {cat.count}
+          </span>
+        )}
+      </a>
+    ))}
+  </div>
+</div>
+
+<style>
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+</style>
