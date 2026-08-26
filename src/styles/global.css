@@ -285,3 +285,27 @@ article :not(pre) > code {
 article hr {
   @apply border-t border-black/10 dark:border-white/15 my-8;
 }
+
+/* ==========================================================================
+   Google AdSense Auto-Ads Guardrails
+   Prevent Google Auto-Ads from breaking or overlaying fixed navigation
+   ========================================================================== */
+#header,
+#drawer,
+.google-auto-ads-ignore {
+  isolation: isolate !important;
+}
+
+#header ins.adsbygoogle,
+#header .google-auto-ads-container,
+#drawer ins.adsbygoogle,
+#drawer .google-auto-ads-container,
+.google-auto-ads-ignore ins.adsbygoogle,
+.google-auto-ads-ignore .google-auto-ads-container {
+  display: none !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
