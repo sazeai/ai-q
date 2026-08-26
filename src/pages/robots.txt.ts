@@ -5,6 +5,10 @@ const siteUrl = import.meta.env.SITE || "https://ai-q.in"
 const robotsTxt = `
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /api/*
 
 Sitemap: ${new URL("sitemap-index.xml", siteUrl).href}
 Sitemap: ${new URL("sitemap.xml", siteUrl).href}
