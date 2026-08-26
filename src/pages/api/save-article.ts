@@ -6,6 +6,19 @@ export const prerender = false
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    const serverPasscode =
+      process.env.ADMIN_PASSCODE ||
+      import.meta.env.ADMIN_PASSCODE ||
+      "aiq-editor-2026"
+    const clientPasscode = request.headers.get("x-admin-passcode")
+
+    if (serverPasscode && clientPasscode !== serverPasscode) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized: Invalid admin credentials" }),
+        { status: 401, headers: { "Content-Type": "application/json" } }
+      )
+    }
+
     const data = await request.json()
     const { collection = "blog", slug, content } = data
 

@@ -165,31 +165,59 @@ const SLASH_COMMANDS: SlashCommand[] = [
 ]
 
 export default function ArticleEditor() {
-  // Security Authentication Gate
-  const MASTER_PASSCODE =
-    import.meta.env.PUBLIC_ADMIN_PASSCODE || "aiq-editor-2026"
-
+  // Security Authentication Gate (Server-Validated)
   const [isAuthenticated, setIsAuthenticated] = createSignal(false)
   const [passcodeInput, setPasscodeInput] = createSignal("")
   const [authError, setAuthError] = createSignal(false)
+  const [authLoading, setAuthLoading] = createSignal(false)
 
-  onMount(() => {
+  onMount(async () => {
     if (typeof window !== "undefined") {
-      const saved = sessionStorage.getItem("aiq_admin_session")
-      if (saved === "authenticated") {
-        setIsAuthenticated(true)
+      const savedPasscode = sessionStorage.getItem("aiq_admin_passcode")
+      if (savedPasscode) {
+        try {
+          const res = await fetch("/api/admin-auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ passcode: savedPasscode }),
+          })
+          const data = await res.json()
+          if (data.success) {
+            setIsAuthenticated(true)
+            setPasscodeInput(savedPasscode)
+          } else {
+            sessionStorage.removeItem("aiq_admin_passcode")
+          }
+        } catch {
+          sessionStorage.removeItem("aiq_admin_passcode")
+        }
       }
     }
   })
 
-  const handleLogin = (e: Event) => {
+  const handleLogin = async (e: Event) => {
     e.preventDefault()
-    if (passcodeInput() === MASTER_PASSCODE) {
-      setIsAuthenticated(true)
-      setAuthError(false)
-      sessionStorage.setItem("aiq_admin_session", "authenticated")
-    } else {
+    setAuthLoading(true)
+    setAuthError(false)
+
+    try {
+      const res = await fetch("/api/admin-auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ passcode: passcodeInput() }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setIsAuthenticated(true)
+        setAuthError(false)
+        sessionStorage.setItem("aiq_admin_passcode", passcodeInput())
+      } else {
+        setAuthError(true)
+      }
+    } catch {
       setAuthError(true)
+    } finally {
+      setAuthLoading(false)
     }
   }
 
@@ -300,6 +328,13 @@ export default function ArticleEditor() {
 
       const res = await fetch("/api/upload-image", {
         method: "POST",
+        headers: {
+          "x-admin-passcode":
+            passcodeInput() ||
+            (typeof window !== "undefined"
+              ? sessionStorage.getItem("aiq_admin_passcode") || ""
+              : ""),
+        },
         body: formData,
       })
 
@@ -385,7 +420,14 @@ ${content()}
       const fullMdx = buildFullMdx()
       const res = await fetch("/api/save-article", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-passcode":
+            passcodeInput() ||
+            (typeof window !== "undefined"
+              ? sessionStorage.getItem("aiq_admin_passcode") || ""
+              : ""),
+        },
         body: JSON.stringify({
           collection: collection(),
           slug: slug(),
@@ -441,9 +483,10 @@ ${content()}
 
               <button
                 type="submit"
-                class="w-full py-2.5 rounded-xl bg-black dark:bg-white text-white dark:text-black font-semibold text-xs hover:opacity-85 shadow-md transition-all cursor-pointer"
+                disabled={authLoading()}
+                class="w-full py-2.5 rounded-xl bg-black dark:bg-white text-white dark:text-black font-semibold text-xs hover:opacity-85 shadow-md transition-all cursor-pointer disabled:opacity-50"
               >
-                Unlock Editor →
+                {authLoading() ? "Verifying Passcode..." : "Unlock Editor →"}
               </button>
             </form>
           </div>
