@@ -17,23 +17,20 @@ interface Props {
 
 const {
   prompt,
-  title,
-  model,
+  model = "Google Gemini",
   aspectRatio,
   negativePrompt,
   seed,
   cfgScale,
   image,
   imageAlt = "AI generated prompt preview",
-  tags,
   class: className,
 } = Astro.props;
 ---
 
 <div
   class={cn(
-    "group/card my-5 overflow-hidden rounded-xl border border-black/15 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.03] backdrop-blur-sm transition-all duration-300 hover:border-black/30 dark:hover:border-white/35 shadow-sm hover:shadow-md",
-    image ? "p-0" : "p-0",
+    "my-5 overflow-hidden rounded-xl border border-black/15 dark:border-white/20 bg-black/[0.02] dark:bg-white/[0.03] shadow-xs",
     className,
   )}
 >
@@ -41,18 +38,18 @@ const {
   <div
     class="flex flex-wrap items-center justify-between gap-2 border-b border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 px-4 py-2.5"
   >
-    <div class="flex flex-wrap items-center gap-2">
-      <!-- Model Badge (if provided) -->
+    <div class="flex items-center gap-2">
+      <!-- Model Badge -->
       {
         model && (
           <span class="inline-flex items-center gap-1.5 rounded-full border border-black/15 dark:border-white/20 bg-white dark:bg-neutral-900 px-2.5 py-0.5 text-xs font-semibold text-black dark:text-white shadow-2xs">
-            <span class="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span class="size-1.5 rounded-full bg-emerald-500" />
             {model}
           </span>
         )
       }
 
-      <!-- Aspect Ratio Badge (if provided) -->
+      <!-- Aspect Ratio Badge -->
       {
         aspectRatio && (
           <span class="inline-flex items-center gap-1 rounded-full border border-black/10 dark:border-white/15 bg-black/[0.04] dark:bg-white/[0.06] px-2 py-0.5 text-xs font-mono text-black/75 dark:text-white/75">
@@ -68,15 +65,6 @@ const {
           </span>
         )
       }
-
-      <!-- Optional Title -->
-      {
-        title && (
-          <span class="text-xs font-semibold text-black dark:text-white">
-            {title}
-          </span>
-        )
-      }
     </div>
 
     <!-- 1-Click Copy Button -->
@@ -84,11 +72,11 @@ const {
       type="button"
       data-prompt-copy
       data-prompt-text={prompt}
-      class="prompt-copy-btn group relative inline-flex items-center gap-1.5 rounded-lg border border-black/15 dark:border-white/20 bg-white dark:bg-neutral-900 px-3 py-1.5 text-xs font-medium text-black dark:text-white shadow-xs transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/10 hover:border-black/30 dark:hover:border-white/40 active:scale-95 cursor-pointer select-none"
+      class="prompt-copy-btn inline-flex items-center gap-1.5 rounded-lg border border-black/15 dark:border-white/20 bg-white dark:bg-neutral-900 px-3 py-1.5 text-xs font-medium text-black dark:text-white shadow-xs hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 cursor-pointer select-none"
       aria-label="Copy AI prompt to clipboard"
     >
       <svg
-        class="copy-icon size-3.5 stroke-current transition-transform group-hover:scale-110"
+        class="copy-icon size-3.5 stroke-current"
         viewBox="0 0 24 24"
         fill="none"
         stroke-width="2"
@@ -129,19 +117,6 @@ const {
           {prompt}
         </p>
       </div>
-
-      <!-- Optional Tag Pills -->
-      {
-        tags && tags.length > 0 && (
-          <div class="flex flex-wrap gap-1.5 mt-2.5">
-            {tags.map((tag) => (
-              <span class="text-[11px] font-medium px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/10 text-black/70 dark:text-white/70">
-                #{tag}
-              </span>
-            ))}
-          </div>
-        )
-      }
 
       <!-- Negative Prompt or Parameters Drawer (if available) -->
       {
@@ -193,12 +168,12 @@ const {
     {
       image && (
         <div class="md:col-span-5 lg:col-span-4 flex items-center justify-center">
-          <div class="group/img relative overflow-hidden rounded-lg border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/5 w-full shadow-xs">
+          <div class="relative overflow-hidden rounded-lg border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/5 w-full shadow-xs">
             <img
               src={image}
               alt={imageAlt}
               loading="lazy"
-              class="aspect-square w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+              class="aspect-square w-full object-cover"
             />
             <div class="absolute bottom-2 right-2 rounded-md bg-black/75 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-md border border-white/10">
               Sample Output

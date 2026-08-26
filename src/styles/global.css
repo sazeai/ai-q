@@ -240,8 +240,7 @@ pre:hover .copy-btn {
 
 /* Premium Prose Markdown Tables with Full Cell Padding */
 article table {
-  @apply w-full text-left border-collapse my-6 rounded-xl overflow-hidden border border-black/15 dark:border-white/20 shadow-sm !important;
-  display: table !important;
+  @apply w-full text-left border-collapse my-6 rounded-xl overflow-x-auto border border-black/15 dark:border-white/20 shadow-sm block md:table !important;
   border-spacing: 0 !important;
 }
 
@@ -253,7 +252,7 @@ article th,
 article thead th,
 article thead th:first-child,
 article thead th:last-child {
-  @apply text-xs font-bold uppercase tracking-wider text-black dark:text-white !important;
+  @apply text-xs font-bold uppercase tracking-wider text-black dark:text-white whitespace-nowrap !important;
   padding: 0.875rem 1rem !important;
 }
 
@@ -261,7 +260,7 @@ article td,
 article tbody td,
 article tbody td:first-child,
 article tbody td:last-child {
-  @apply text-sm text-black/85 dark:text-white/85 border-b border-black/10 dark:border-white/10 !important;
+  @apply text-sm text-black/85 dark:text-white/85 border-b border-black/10 dark:border-white/10 whitespace-nowrap !important;
   padding: 0.875rem 1rem !important;
 }
 
@@ -279,7 +278,7 @@ article tbody tr:hover {
 
 /* Inline code and HR */
 article :not(pre) > code {
-  @apply px-1.5 py-0.5 text-[0.875em] rounded bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/15 text-black dark:text-white font-mono;
+  @apply px-1.5 py-0.5 text-[0.875em] rounded bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/15 text-black dark:text-white font-mono whitespace-nowrap;
 }
 
 article hr {

@@ -15,10 +15,8 @@ const SLASH_COMMANDS: SlashCommand[] = [
     icon: "🎨",
     description: "Featured prompt with live image preview & copy button",
     template: `<PromptCard
-  title="Showcase Prompt Title"
   model="Google Gemini"
   aspectRatio="1:1"
-  tags={["Trending", "3D Avatar", "Custom Hoodie"]}
   prompt="Your detailed prompt description with style tokens and lighting directives..."
   negativePrompt="plastic skin, blurry, cartoon, extra limbs, bad quality"
   seed="482910"
@@ -33,26 +31,10 @@ const SLASH_COMMANDS: SlashCommand[] = [
     icon: "⚡",
     description: "Typography-first compact prompt card (fast copy, no image)",
     template: `<PromptCard
-  title="Prompt #2: Compact Style Name"
   model="Google Gemini"
   aspectRatio="4:5"
-  tags={["Vintage", "Streetwear", "Minimalist"]}
   prompt="Detailed compact prompt text for rapid copy paste..."
   negativePrompt="deformed hands, flat lighting, low quality"
-/>`,
-  },
-  {
-    id: "category-nav",
-    label: "Category Quick-Jump Bar",
-    icon: "🧭",
-    description: "Horizontal scrollable pill navigation for long guides",
-    template: `<PromptCategoryNav
-  title="Jump to Style Category"
-  categories={[
-    { title: "Category 1", id: "category-1", count: 5, icon: "🔥" },
-    { title: "Category 2", id: "category-2", count: 5, icon: "✨" },
-    { title: "Category 3", id: "category-3", count: 5, icon: "👑" },
-  ]}
 />`,
   },
   {

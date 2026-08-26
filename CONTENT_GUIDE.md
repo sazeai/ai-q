@@ -97,33 +97,14 @@ draft: false
 
 ## 3. UI Component Catalog & Slash Commands (`/`)
 
-### 1. `<PromptCategoryNav />` (Slash: `/category-nav` or `/nav`)
-**Use for:** Top horizontal-scroll quick jump navigation pills on long prompt guides (especially for mobile users).
-
-```jsx
-<PromptCategoryNav
-  title="Quick Jump to Category"
-  categories={[
-    { title: "3D Boys on Bikes", id: "category-1-3d-boys", count: 5, icon: "🏍️" },
-    { title: "Cute 3D Girls & Pets", id: "category-2-3d-girls", count: 5, icon: "🐱" },
-    { title: "3D Neon Wings & Thrones", id: "category-3-wings-throne", count: 5, icon: "🪽" },
-    { title: "3D Social Media Avatars", id: "category-4-social-avatars", count: 5, icon: "📱" },
-    { title: "3D Romantic Couples", id: "category-5-3d-couples", count: 5, icon: "💖" },
-    { title: "3D Festive & Royal Indian", id: "category-6-3d-festive", count: 5, icon: "🪔" },
-  ]}
-/>
-```
-
-### 2. `<PromptCard />` (Slash: `/prompt`)
+### 1. `<PromptCard />` (Slash: `/prompt`)
 **Use for:** Prompts with 1-click clipboard copy, model badge, parameters drawer, aspect ratio pill, and optional preview image.
 
 **Showcase Mode (with authentic R2 CDN output image):**
 ```jsx
 <PromptCard
-  title="3D Pixar Boy on Black Sports Motorcycle with 'KING' Hoodie"
   model="Google Gemini / Imagen 3"
   aspectRatio="1:1"
-  tags={["3D Pixar", "3D Bike", "Custom Hoodie", "Boys 3D DP"]}
   prompt="A cute 3D stylized character of a cool teenage boy wearing a black oversized hoodie with bold white text 'KING' printed on the chest, ripped light-blue denim jeans, and stylish orange sneakers. He is sitting casually with one leg over a matte-black 3D stylized sports motorcycle on a clean city street. Cute Pixar 3D animated movie character design, smooth vinyl and clay material textures, volumetric studio gradient lighting, 8k digital 3D render."
   negativePrompt="photorealistic, 2d cartoon, ugly face, distorted fingers, low poly"
   seed="948201"
@@ -133,13 +114,11 @@ draft: false
 />
 ```
 
-**Compact Mode (clean, typography-first, fast copy for secondary prompts):**
+**Compact Mode (clean, typography-first, fast copy):**
 ```jsx
 <PromptCard
-  title="Prompt #2: 3D Cyberpunk Boy on Glowing Neon Superbike"
   model="Google Gemini / Flux.1"
   aspectRatio="1:1"
-  tags={["3D Cyberpunk", "Neon Bike", "Glowing Wheels"]}
   prompt="A 1:1 stylized 3D digital illustration of a cool boy character with spiky hair, wearing a sleek black technical jacket with glowing cyan neon trims and custom name tag 'ALEX'. He is sitting on a futuristic 3D cyberpunk superbike with glowing neon blue wheels. Smooth 3D render, Pixar Disney character design, Unreal Engine 5 stylized lighting."
   negativePrompt="deformed bike, plastic skin, cartoon, blurry, low resolution"
 />

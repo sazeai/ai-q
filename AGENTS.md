@@ -11,14 +11,13 @@ When generating new blog posts (`src/content/blog/`) or AI model experiments (`s
 3. **Strict Search-Intent & Aesthetic Alignment Rule**:
    - When authoring **3D / Avatar / Pixar / Cartoon** prompt articles: Every prompt and image MUST be 100% 3D digital art, Pixar/Disney character designs, 3D clay/vinyl shaders, and glowing 3D elements. Never insert DSLR camera lenses (Canon/Hasselblad) into 3D prompts.
    - When authoring **Photorealistic / Editorial** guides: Use physical optical conditioning (85mm f/1.4, film stock, authentic skin pores, no artificial AI sheen).
-4. **Two-Tier Prompt Card Rule**:
-   - Showcase Cards: Top 3–5 prompts have unique, authentic sample images.
-   - Compact Cards: All other prompts use the sleek compact `<PromptCard />` without the `image` prop (NEVER repeat placeholder images).
+4. **Clean Prompt Card Rule**:
+   - Keep `<PromptCard />` ultra-clean: Pass `model`, `aspectRatio`, `prompt`, `negativePrompt`, and optional `image` (for top showcase prompts).
+   - Do NOT pass redundant `title` or `tags` into PromptCards.
 5. **Google AdSense Policy & Anti-Spam Placement Rule**:
    - Write `<AdUnit />` directly with zero boilerplate (it automatically uses the configured live slot ID).
    - **Max Density**: Place at most **2 to 3 `<AdUnit />` units per long article (1,500+ words)**.
    - **Placement Separation**: Never place ads above the fold (directly under H1), never place consecutive ads, and always separate ad units by at least 3-4 content sections (500+ words).
-6. **Zero-Import Rule**: Never import UI components inside `.mdx` files; all components (`PromptCard`, `PromptCategoryNav`, `ModelSpecs`, `ScoreRating`, `ProsCons`, `ModelComparisonTable`, `ComparisonSlider`, `ImageGrid`, `FAQAccordion`, `Callout`, `AdUnit`, `ArticleSources`, `Link`) are globally provided.
+6. **Zero-Import Rule**: Never import UI components inside `.mdx` files; all components (`PromptCard`, `ModelSpecs`, `ScoreRating`, `ProsCons`, `ModelComparisonTable`, `ComparisonSlider`, `ImageGrid`, `FAQAccordion`, `Callout`, `AdUnit`, `ArticleSources`, `Link`) are globally provided.
 7. **Pure-Template Rule**: Pass all data dynamically through props in the `.mdx` file.
-8. **Category Navigation Rule**: Include `<PromptCategoryNav />` at the top of multi-prompt guides for mobile quick-jump.
-9. **Validation**: Run `npx astro check` to verify 0 errors before concluding any task.
+8. **Validation**: Run `npx astro check` to verify 0 errors before concluding any task.
