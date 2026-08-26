@@ -9,17 +9,17 @@ type Props = {
 const { heading } = Astro.props;
 ---
 
-<li class="list-inside list-disc py-1 text-sm text-black/80 dark:text-white/80">
+<li class="py-0.5 text-sm text-black/80 dark:text-white/80">
   <Link
     href={"#" + heading.slug}
     underline={false}
-    class="hover:text-black dark:hover:text-white hover:underline underline-offset-2 transition-colors"
+    class="inline hover:text-black dark:hover:text-white hover:underline underline-offset-2 transition-colors"
   >
     {heading.text}
   </Link>
   {
     heading.subheadings && heading.subheadings.length > 0 && (
-      <ul class="pl-4 pt-1 space-y-1">
+      <ul class="list-[circle] list-outside pl-4 pt-1 space-y-1">
         {heading.subheadings.map((subheading: Heading) => (
           <Astro.self heading={subheading} />
         ))}

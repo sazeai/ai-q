@@ -64,7 +64,7 @@ function buildToc(rawHeadings: { depth: number; slug: string; text: string }[] =
         </svg>
       </summary>
       <nav class="px-4 py-3 border-t border-black/10 dark:border-white/10">
-        <ul class="space-y-1">
+        <ul class="list-disc list-outside pl-4 space-y-1">
           {toc.map((heading) => (
             <TableOfContentsHeading heading={heading} />
           ))}
